@@ -4,7 +4,7 @@ function get_db(){
     $db = null;
 
     try{
-        $db = new PDO('mysql:host=localhost;dbname=blogs_db', 'root','');
+        $db = new PDO('mysql:host=localhost;dbname=blogs_db', 'root','hit326');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch(PDOException $e){
@@ -48,6 +48,53 @@ function sign_up($user_name, $password, $password_confirm){
 
 }
 
+function get_user_id(){
+   $id="";
+   session_start();  
+   if(!empty($_SESSION["id"])){
+      $id = $_SESSION["id"];
+   }
+   session_write_close();
+   return $id;	
+}
+
+function get_user_name(){
+   $id="";
+   $name="";
+   session_start();  
+   if(!empty($_SESSION["id"])){
+      $id = $_SESSION["id"];
+   }
+   session_write_close();
+
+   if(empty($id)){
+     throw new Exception("User has no valid id");	
+   }
+	
+   try{
+      $db = get_db();  
+      $query = "SELECT name FROM users WHERE id=?";
+      if($statement = $db->prepare($query)){
+         $binding = array($id);
+         if(!$statement -> execute($binding)){
+                 throw new Exception("Could not execute query.");
+         }
+         else{
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $name = $result['name'];
+         }
+      }
+      else{
+            throw new Exception("Could not prepare statement.");
+      }
+
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
+   return $name;	
+}
+
 function sign_in($user_name,$password){
    try{
       $db = get_db();  
@@ -78,6 +125,36 @@ function sign_in($user_name,$password){
    catch(Exception $e){
       throw new Exception($e->getMessage());
    }
+}
+
+function is_db_empty(){
+   $is_empty = false;
+   try{
+      $db = get_db();  
+      $query = "SELECT id FROM users WHERE id=?";
+      if($statement = $db->prepare($query)){
+	     $id=1;
+         $binding = array($id);
+         if(!$statement -> execute($binding)){
+                 throw new Exception("Could not execute query.");
+         }
+         else{
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            if(empty($result)){
+	          $is_empty = true;
+            }
+         }
+      }
+      else{
+            throw new Exception("Could not prepare statement.");
+      }
+
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
+   return $is_empty;	
+	
 }
 
 function set_authenticated_session($id,$password_hash){

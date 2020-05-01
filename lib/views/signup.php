@@ -1,6 +1,6 @@
 <h1>Sign up</h1>
 <div>
-<form action='?signup' method='POST'>
+<form action='/signup' method='POST'>
  <input type='hidden' name='_method' value='post' />
  <?php
     require PARTIALS."/form.name.php";
