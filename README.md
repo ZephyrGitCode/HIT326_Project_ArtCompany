@@ -1,1 +1,0 @@
-# HIT326_Project_ArtCompany
