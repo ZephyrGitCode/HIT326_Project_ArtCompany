@@ -34,7 +34,7 @@ get("/",function($app){
 });
 
 get("/signin",function($app){
-   $app->force_to_https("/signin");
+   $app->force_to_http("/signin");
    $app->set_message("title","Sign in");
    require MODEL;
    try{
@@ -49,7 +49,7 @@ get("/signin",function($app){
 });
 
 get("/signup",function($app){
-    $app->force_to_https("/signup");  
+    $app->force_to_http("/signup");  
     require MODEL;
     $is_authenticated=false;
     $is_db_empty=false;
@@ -77,7 +77,7 @@ get("/signup",function($app){
 });
 
 get("/change",function($app){
-   $app->force_to_https("/change");
+   $app->force_to_http("/change");
    $app->set_message("title","Change password");
    require MODEL;
    $name="";
@@ -107,7 +107,7 @@ get("/change",function($app){
 
 get("/signout",function($app){
    // should this be GET or POST or PUT?????
-   $app->force_to_https("/signout");
+   $app->force_to_http("/signout");
    require MODEL;
    if(is_authenticated()){
       try{
@@ -161,7 +161,7 @@ post("/signup",function($app){
         
     }
     catch(Exception $e){
-         $app->set_flash($e.getMessage());  
+         //$app->set_flash($e.getMessage());  
          $app->redirect_to("/");
        
     
@@ -196,6 +196,10 @@ put("/change",function($app){
 });
 
 # The Delete call back is left for you to work out
-
-// New. If it get this far then page not found
+delete("/user",function($app){
+   //query to delete
+   $app->set_flash("User has been deleted");
+   $app->redirect_to("/");
+});
+// Now. If it get this far then page not found
 resolve();

@@ -89,15 +89,6 @@ class Application{
       return $_SERVER['REQUEST_URI'];
     }
 
-    public function force_to_https($path="/"){
-        if(!(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on')){
-           $host = $_SERVER['HTTP_HOST'];
-           $redirect_to_path = "https://".$host.$path;
-           $this->redirect_to($redirect_to_path);
-           exit();
-        }
-    }
-
     public function force_to_http($path="/"){
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on'){
            $host = $_SERVER['HTTP_HOST'];
