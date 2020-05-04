@@ -4,7 +4,7 @@ function get_db(){
     $db = null;
 
     try{
-        $db = new PDO('mysql:host=localhost;dbname=blogs_db', 'root','');
+        $db = new PDO('mysql:host=localhost;dbname=art_users', 'root','');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch(PDOException $e){
