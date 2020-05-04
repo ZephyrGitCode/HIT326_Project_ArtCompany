@@ -1,4 +1,4 @@
-USE blogs_db;
+USE art_users;
 
 CREATE TABLE `users` (
   id int(11) NOT NULL auto_increment,

@@ -28,7 +28,7 @@ require APP;
 
 get("/",function($app){
    $app->force_to_http("/");
-   $app->set_message("title","Home");
+   $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
    $app->render(LAYOUT,"home");
 });
