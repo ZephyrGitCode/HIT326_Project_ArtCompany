@@ -17,7 +17,7 @@ function get_db(){
 
 /* Other functions can go below here */
 
-function get_products(){
+function get_users(){
    $list = null;
    try{
       $db = get_db();
@@ -26,6 +26,21 @@ function get_products(){
       $statement -> execute();
       $list = $statement->fetchall(PDO::FETCH_ASSOC);
       return $list;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      }
+}
+
+function get_products(){
+   $list = null;
+   try{
+      $db = get_db();
+      $query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      $statement = $db->prepare($query);
+      $statement -> execute();
+      $arts = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $arts;
    }
    catch(PDOException $e){
       throw new Exception($e->getMessage());

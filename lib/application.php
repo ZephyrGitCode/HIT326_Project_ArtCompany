@@ -80,7 +80,8 @@ class Application{
        $content = VIEWS."/{$content}.php";
 
        if(!empty($layout)){
-          $list = get_products();
+          $users = get_users();
+          $arts = get_products();
           require VIEWS."/{$layout}.layout.php";
        }
        else{
