@@ -58,8 +58,11 @@ class Application{
         else{
             return false;
         }
-    }   
+    }
     
+    public function route_var($key){
+      return $this->route_variables[$key];
+   }
     /* All the the methods below come from week 6 functions in application.php i.e. example 17*/
 
 
@@ -162,7 +165,7 @@ class Application{
 	  if(!static::$route_found){
 		$application = static::get_instance();
 		header("HTTP/1.0 404 Not Found");
-	    $application->render("standard","404");	
+	    $application->render("standard","signup");	
 	  }
     }
 

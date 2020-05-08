@@ -1,2 +1,2 @@
-<label for='passw'>Password (6 characters minimum) *</label>
-<input type='password' id='passw' name='password' placeholder="Password"/>
+<label for='password'>Password (6 characters minimum) *</label>
+<input type='password' id='password' name='password' placeholder="Password"/>
