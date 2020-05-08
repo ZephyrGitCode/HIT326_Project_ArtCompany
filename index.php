@@ -30,6 +30,7 @@ get("/",function($app){
    $app->force_to_http("/");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
+   require MODEL;
    $app->render(LAYOUT,"home");
 });
 
@@ -48,11 +49,39 @@ get("/signin",function($app){
    $app->render(LAYOUT,"signin");
 });
 
+get("/user/:id",function($app){
+   $id = $app->route_var('id');
+   if(is_numeric($id)){
+      $app->force_to_http("/user");
+      $name="";
+      require MODEL;
+      try{
+         if(is_authenticated()){
+            $app->set_message("authenticated",true);
+            $name = $user->get_user_name($app->route_var("id"));
+         }
+         else if(is_db_empty()){
+            $app->redirect_to('/signup');
+         }
+      }
+      catch(Exception $e){
+         $app->set_message("error, ",$e->getMessage());
+      }
+         $app->set_message("title","User");
+         $app->set_message("name",$name);
+         $app->render(LAYOUT,"user");
+      }
+      else{
+         $app->reset_route(); //will see later how to improve this
+   }
+});
+
 get("/signup",function($app){
     $app->force_to_http("/signup");  
     require MODEL;
     $is_authenticated=false;
     $is_db_empty=false;
+    /*
     try{
        $is_authenticated = is_authenticated();
        $is_db_empty = is_db_empty();
@@ -61,7 +90,7 @@ get("/signup",function($app){
        $app->set_flash("We have a problem with DB. The gerbils are working on it."); 
        $app->redirect_to("/"); 
     }   
-
+    
     if($is_authenticated){
         $app->set_message("error","Create more accounts for other users.");
     }
@@ -72,6 +101,8 @@ get("/signup",function($app){
        $app->set_flash("You are not authorised to access this resource yet. I'm gonna tell your mum if you don't sign in."); 
        $app->redirect_to("/signin");        
     }
+    */
+    
    $app->set_message("title","Sign up");
    $app->render(LAYOUT,"signup");
 });
@@ -124,23 +155,22 @@ get("/signout",function($app){
         $app->set_flash("You can't sign out if you are not signed in!");
         $app->redirect_to("/signin");
    }   
-
-   
-
 });
 
 
 post("/signup",function($app){
     require MODEL;
     try{
-        if(is_authenticated() || is_db_empty()){
-          $name = $app->form('name');
+        //if(is_authenticated() || is_db_empty()){
+          $fname = $app->form('fname');
+          $lname = $app->form('lname');
+          $email = $app->form('email');
           $pw = $app->form('password');
-          $confirm = $app->form('password-confirm');
+          $confirm = $app->form('passw-c');
    
-          if($name && $pw && $confirm){
+          if($fname && $lname && $email && $pw && $confirm){
               try{
-                sign_up($name,$pw,$confirm);
+                sign_up($fname,$lname,$email,$pw,$confirm);
                 $app->set_flash(htmlspecialchars($app->form('name'))." is now signed up ");    
              }
              catch(Exception $e){
@@ -153,28 +183,26 @@ post("/signup",function($app){
              $app->redirect_to("/signup");
           }
           $app->redirect_to("/signup");
-        }
-        else{
-           $app->set_flash("You are not authorised to access this resource");  
-           $app->redirect_to("/");           
-        }
-        
+        //}
+        //else{
+        //   $app->set_flash("You are not authorised to access this resource");  
+        //   $app->redirect_to("/");           
+        //}
     }
     catch(Exception $e){
          //$app->set_flash($e.getMessage());  
          $app->redirect_to("/");
-       
-    
     }
 });
 
 post("/signin",function($app){
-  $name = $app->form('name');
+  $name = $app->form('fname');
+  $name = $app->form('lname');
   $password = $app->form('password');
   if($name && $password){
     require MODEL;
     try{
-       sign_in($name,$password);
+       sign_in($fname,$lname,$password);
     }
     catch(Exception $e){
       $app->set_flash("Could not sign you in. Try again. {$e->getMessage()}");
