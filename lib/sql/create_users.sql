@@ -1,4 +1,4 @@
-USE art_users;
+USE art_db;
 
 CREATE TABLE `users` (
   id int(11) NOT NULL auto_increment,

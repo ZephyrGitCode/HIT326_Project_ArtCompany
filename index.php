@@ -30,6 +30,7 @@ get("/",function($app){
    $app->force_to_http("/");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
+   require MODEL;
    $app->render(LAYOUT,"home");
 });
 
@@ -80,6 +81,7 @@ get("/signup",function($app){
     require MODEL;
     $is_authenticated=false;
     $is_db_empty=false;
+    /*
     try{
        $is_authenticated = is_authenticated();
        $is_db_empty = is_db_empty();
@@ -99,6 +101,7 @@ get("/signup",function($app){
        $app->set_flash("You are not authorised to access this resource yet. I'm gonna tell your mum if you don't sign in."); 
        $app->redirect_to("/signin");        
     }
+    */
     
    $app->set_message("title","Sign up");
    $app->render(LAYOUT,"signup");
@@ -158,7 +161,7 @@ get("/signout",function($app){
 post("/signup",function($app){
     require MODEL;
     try{
-        if(is_authenticated() || is_db_empty()){
+        //if(is_authenticated() || is_db_empty()){
           $fname = $app->form('fname');
           $lname = $app->form('lname');
           $email = $app->form('email');
@@ -180,11 +183,11 @@ post("/signup",function($app){
              $app->redirect_to("/signup");
           }
           $app->redirect_to("/signup");
-        }
-        else{
-           $app->set_flash("You are not authorised to access this resource");  
-           $app->redirect_to("/");           
-        }
+        //}
+        //else{
+        //   $app->set_flash("You are not authorised to access this resource");  
+        //   $app->redirect_to("/");           
+        //}
     }
     catch(Exception $e){
          //$app->set_flash($e.getMessage());  

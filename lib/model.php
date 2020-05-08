@@ -17,6 +17,23 @@ function get_db(){
 
 /* Other functions can go below here */
 
+function get_products(){
+   $list = null;
+   try{
+      $db = get_db();
+      $query = "SELECT fname FROM users";
+      $statement = $db->prepare($query);
+      $statement -> execute();
+      $list = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $list;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      }
+}
+
+
+
 function sign_up($fname, $lname, $email, $password, $password_confirm){
    try{
      $db = get_db();
@@ -107,6 +124,11 @@ function sign_in($fname,$password){
          else{
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $salt = $result['salt'];
+            session_start();
+            $_SESSION['result'] = $result;
+            $_SESSION['salt'] = $salt;
+            $_SESSION['hash'] = $result['hashed_password'];
+            session_write_close();
             $hashed_password = $result['hashed_password'];
             /*
             if(generate_password_hash($password,$salt) !== $hashed_password){
