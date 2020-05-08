@@ -1,4 +1,2 @@
- <label for='password-confirm'>Confirm password</label>
- <input type='password' id='password-confirm' name='password-confirm' />
- 
-
+ <label for='passw-c'>Confirm Password *</label>
+ <input type='password' id='passw-c' name='passw-c'/>

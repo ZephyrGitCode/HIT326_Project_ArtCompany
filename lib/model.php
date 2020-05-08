@@ -4,7 +4,7 @@ function get_db(){
     $db = null;
 
     try{
-        $db = new PDO('mysql:host=localhost;dbname=blogs_db', 'root','');
+        $db = new PDO('mysql:host=localhost;dbname=art_db', 'root','');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch(PDOException $e){
@@ -17,16 +17,48 @@ function get_db(){
 
 /* Other functions can go below here */
 
-function sign_up($user_name, $password, $password_confirm){
+function get_users(){
+   $list = null;
+   try{
+      $db = get_db();
+      $query = "SELECT fname FROM users";
+      $statement = $db->prepare($query);
+      $statement -> execute();
+      $list = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $list;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      }
+}
+
+function get_products(){
+   $list = null;
+   try{
+      $db = get_db();
+      $query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      $statement = $db->prepare($query);
+      $statement -> execute();
+      $arts = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $arts;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      }
+}
+
+
+
+function sign_up($fname, $lname, $email, $password, $password_confirm){
    try{
      $db = get_db();
      
-     if(validate_user_name($db,$user_name) && validate_passwords($password,$password_confirm)){
+     if(validate_user_name($db,$fname) && validate_passwords($password,$password_confirm)){
           $salt = generate_salt();
           $password_hash = generate_password_hash($password,$salt);
-          $query = "INSERT INTO users (name,salt,hashed_password) VALUES (?,?,?)";
+          $query = "INSERT INTO users (fname,lname,email,salt,hashed_password) VALUES (?,?,?,?,?)";
           if($statement = $db->prepare($query)){
-             $binding = array($user_name,$salt,$password_hash);
+             $binding = array($fname,$lname,$email,$salt,$password_hash);
              if(!$statement -> execute($binding)){
                  throw new Exception("Could not execute query.");
              }
@@ -48,25 +80,109 @@ function sign_up($user_name, $password, $password_confirm){
 
 }
 
-function sign_in($user_name,$password){
+function get_user_id(){
+   $id="";
+   session_start();  
+   if(!empty($_SESSION["id"])){
+      $id = $_SESSION["id"];
+   }
+   session_write_close();
+   return $id;	
+}
+
+function get_user_name(){
+   $id="";
+   $name="";
+   session_start();  
+   if(!empty($_SESSION["id"])){
+      $id = $_SESSION["id"];
+   }
+   session_write_close();
+
+   if(empty($id)){
+     throw new Exception("User has no valid id");	
+   }
+	
    try{
       $db = get_db();  
-      $query = "SELECT id, salt, hashed_password FROM users WHERE name=?";
+      $query = "SELECT name FROM users WHERE id=?";
       if($statement = $db->prepare($query)){
-         $binding = array($user_name);
+         $binding = array($id);
+         if(!$statement -> execute($binding)){
+                 throw new Exception("Could not execute query.");
+         }
+         else{
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $name = $result['name'];
+         }
+      }
+      else{
+            throw new Exception("Could not prepare statement.");
+      }
+
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
+   return $name;	
+}
+
+function sign_in($fname,$password){
+   try{
+      $db = get_db();  
+      $query = "SELECT id, salt, hashed_password FROM users WHERE fname=?";
+      if($statement = $db->prepare($query)){
+         $binding = array($fname);
          if(!$statement -> execute($binding)){
                  throw new Exception("Could not execute query.");
          }
          else{
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $salt = $result['salt'];
+            session_start();
+            $_SESSION['result'] = $result;
+            $_SESSION['salt'] = $salt;
+            $_SESSION['hash'] = $result['hashed_password'];
+            session_write_close();
             $hashed_password = $result['hashed_password'];
+            /*
             if(generate_password_hash($password,$salt) !== $hashed_password){
-                throw new Exception("Account does not exist!");
+                throw new Exception("Account does not exist! .");
             }
             else{
                $id = $result["id"];
                set_authenticated_session($id,$hashed_password);
+            }
+            */
+            $id = $result["id"];
+            set_authenticated_session($id,$hashed_password);
+         }
+      }
+      else{
+            throw new Exception("Could not prepare statement.");
+      }
+
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
+}
+
+function is_db_empty(){
+   $is_empty = false;
+   try{
+      $db = get_db();  
+      $query = "SELECT id FROM users WHERE id=?";
+      if($statement = $db->prepare($query)){
+	     $id=1;
+         $binding = array($id);
+         if(!$statement -> execute($binding)){
+                 throw new Exception("Could not execute query.");
+         }
+         else{
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            if(empty($result)){
+	          $is_empty = true;
             }
          }
       }
@@ -78,6 +194,8 @@ function sign_in($user_name,$password){
    catch(Exception $e){
       throw new Exception($e->getMessage());
    }
+   return $is_empty;	
+	
 }
 
 function set_authenticated_session($id,$password_hash){
