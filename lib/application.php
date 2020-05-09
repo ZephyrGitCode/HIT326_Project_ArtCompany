@@ -73,16 +73,14 @@ class Application{
        foreach($this->messages As $key => $val){
             $$key = $val;
        }
-       
 
        $flash = $this->get_flash();
 
        $content = VIEWS."/{$content}.php";
 
        if(!empty($layout)){
-          if ($content == "art"){
-            require MODEL;
-            $users = get_users();
+          if ($content == "home"){
+            //$users = get_users();
             $arts = get_products();
           }
           

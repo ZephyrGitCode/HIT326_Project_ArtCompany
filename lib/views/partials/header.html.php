@@ -23,6 +23,7 @@
     
     <hr style="margin-bottom:0;"/>
     <div class="navforms forms">
+    <a href="/signup"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signup</p></a>
       <a href="/signin"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signin</p></a>
       <a href="/signout"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signout</p></a>
       <a href="/myaccount"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe869</span>My Account</p></a>
