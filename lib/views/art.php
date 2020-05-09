@@ -1,14 +1,17 @@
 <section class="products">
 <!--- Product details container --->
-    <div class="artcontainer">
+
+<body>
+    <div class="productcontainer">
       <img class=productimage src="https://i.imgur.com/WijgGCs.png">
       <div class="producttext">
         <h2><i>Sonic Meme</i></h2>
         <p><b>0nyxheart</b></p>
         <p class="price">AUD $12.50</p>
         <p><b>Size: </b>60x55cm</P>
-        <label>Quantity:</label>
-        <input class="artinput" type="text" value="1">
+
+        <label class=productlabel>Quantity:</label>
+        <input class=productinput type="text" value="1">
         <button type="button" class="btn btn-default cart">
         Add to cart</button>
       </div>

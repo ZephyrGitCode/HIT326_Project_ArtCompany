@@ -274,27 +274,37 @@ textarea{
 
 /* Products flex container */
 
-.products {
-  display: flex;
-  flex-wrap: wrap;
+
+.productcontainer
+{
+  margin :0 auto;
+  display:inline-block;
+  width: 850px;
+  padding: 20px 40px 40px;
+  max-width: 640px;
 }
 
 .product-card {
   flex: 1 16%;
 }
 
-.productimage {
-  width: 100%;
-}
+
+.productinput
+{
+  border: 1px solid #ccc;
+  font-weight: bold;
+  height: 30px;
+  text-align: center;
+  width: 30px;
 
 .product-info {
   margin-top: auto;
 }
 
-@media (max-width: 920px) {
-  .product-card {
-    flex: 1 21%;
-  }
+
+.productlabel {
+  width: 75px;
+  float:left;
 }
 
 /* Products flex container end */
