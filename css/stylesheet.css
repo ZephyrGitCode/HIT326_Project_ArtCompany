@@ -3,7 +3,7 @@
 
  /*Sign up and Login Page Start*/
 
-form{
+ form{
   margin: 0px 10px 0px 10px;
   padding: 0px 10px 10px 10px;
 }
@@ -272,59 +272,29 @@ textarea{
 
 /* Other form styles End */
 
-/* Products page styles start */
+/* Products flex container */
 
-.container
-{
-  margin :0 auto;
-  display:inline-block;
-  width: 850px;
-  padding: 20px 40px 40px;
-  max-width: 640px;
+.products {
   display: flex;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  flex: 1 16%;
 }
 
 .productimage {
-  margin: 20px 30px 0 0;
-  width: 200px;
-  object-fit: contain;
-  align-self: flex-start;
+  width: 100%;
 }
 
-.producttext
-{
-  color: #555;
-  float: right;
+.product-info {
+  margin-top: auto;
 }
 
-.price
-{
-  color: #FE98;
-  font-size: 26px;
-  font-weight: bold;
-  padding-top: 20px;
+@media (max-width: 920px) {
+  .product-card {
+    flex: 1 21%;
+  }
 }
 
-input
-{
-  border: 1px solid #ccc;
-  font-weight: bold;
-  height: 30px;
-  text-align: center;
-  width: 30px;
-}
-
-.cart
-{
-  background: #FE980F;
-  color: #FFFFFF;
-  font-size: 15px;
-}
-
-label {
-  width: 75px;
-  float:left;
-}
-
-
-/* Products page styles end */
+/* Products flex container end */

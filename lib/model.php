@@ -18,7 +18,7 @@ function get_db(){
 /* Other functions can go below here */
 
 function get_users(){
-   $list = null;
+   //$list = null;
    try{
       $db = get_db();
       $query = "SELECT fname FROM users";
@@ -34,7 +34,7 @@ function get_users(){
 }
 
 function get_products(){
-   $arts = null;
+   //$arts = null;
    try{
       $db = get_db();
       $query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";

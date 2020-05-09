@@ -32,6 +32,7 @@ get("/",function($app){
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome to Darwin Art Company, please browse our wonderful selection of fine arts.");
    require MODEL;
+   $app->set_message("arts",get_products());
    $app->render(LAYOUT,"home");
 });
 
@@ -40,6 +41,7 @@ get("/all-art",function($app){
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Browse all arts.");
    require MODEL;
+   $app->set_message("arts", get_products());
    $app->render(LAYOUT,"home");
 });
 
@@ -48,6 +50,7 @@ get("/art/1",function($app){
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
    require MODEL;
+   $app->set_message("arts", get_products());
    $app->render(LAYOUT,"art");
 });
 
