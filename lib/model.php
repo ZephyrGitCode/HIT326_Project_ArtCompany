@@ -29,11 +29,12 @@ function get_users(){
    }
    catch(PDOException $e){
       throw new Exception($e->getMessage());
+      return "";
       }
 }
 
 function get_products(){
-   $list = null;
+   $arts = null;
    try{
       $db = get_db();
       $query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
@@ -44,6 +45,7 @@ function get_products(){
    }
    catch(PDOException $e){
       throw new Exception($e->getMessage());
+      return "";
       }
 }
 

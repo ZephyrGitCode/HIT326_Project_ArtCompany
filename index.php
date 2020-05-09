@@ -35,6 +35,14 @@ get("/",function($app){
    $app->render(LAYOUT,"home");
 });
 
+get("/all-art",function($app){
+   $app->force_to_http("/all-art");
+   $app->set_message("title","Darwin Art Company");
+   $app->set_message("message","Browse all arts.");
+   require MODEL;
+   $app->render(LAYOUT,"home");
+});
+
 get("/art/1",function($app){
    $app->force_to_http("/art/1");
    $app->set_message("title","Darwin Art Company");
