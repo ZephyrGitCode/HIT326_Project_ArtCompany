@@ -30,9 +30,17 @@ require APP;
 get("/",function($app){
    $app->force_to_http("/");
    $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Welcome");
+   $app->set_message("message","Welcome to Darwin Art Company, please browse our wonderful selection of fine arts.");
    require MODEL;
    $app->render(LAYOUT,"home");
+});
+
+get("/art/1",function($app){
+   $app->force_to_http("/art/1");
+   $app->set_message("title","Darwin Art Company");
+   $app->set_message("message","Welcome");
+   require MODEL;
+   $app->render(LAYOUT,"art");
 });
 
 get("/signin",function($app){

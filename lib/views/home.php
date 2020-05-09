@@ -1,8 +1,24 @@
-<h1>Home page</h1>
+<h1>Home</h1>
 
-<h2>Art company</h2>
 
 <p><?php echo $message ?></p>
+
+   <!--
+<section class="products">
+
+  <div class="product-card">
+    <div class="product-image">
+      <img src="">
+    </div>
+    <div class="product-info">
+      <h5>Item</h5>
+      <h6>$99.99</h6>
+    </div>
+  </div>
+
+
+</section>
+--->
 
 <?php
 
@@ -18,7 +34,7 @@ if(!empty($arts)){
       $image = htmlspecialchars($art['link'],ENT_QUOTES, 'UTF-8');
       ?>
       <div class="artlist">
-      <a href="<?php echo "/"."art/"."{$artno}"?>" id="car1">
+      <a href="<?php echo "/"."art/"."{$artno}"?>">
             <div class="dimage">
               <img href="" src="<?php echo "{$image}"?>" class="artimage"/>
             </div>

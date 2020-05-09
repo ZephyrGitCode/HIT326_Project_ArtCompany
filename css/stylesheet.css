@@ -272,3 +272,29 @@ textarea{
 
 /* Other form styles End */
 
+/* Products flex container */
+
+.products {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  flex: 1 16%;
+}
+
+.product-image img {
+  max-width: 100%;
+}
+
+.product-info {
+  margin-top: auto;
+}
+
+@media (max-width: 920px) {
+  .product-card {
+    flex: 1 21%;
+  }
+}
+
+/* Products flex container end */
