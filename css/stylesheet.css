@@ -3,7 +3,7 @@
 
  /*Sign up and Login Page Start*/
 
-form{
+ form{
   margin: 0px 10px 0px 10px;
   padding: 0px 10px 10px 10px;
 }
@@ -272,9 +272,9 @@ textarea{
 
 /* Other form styles End */
 
-/* Products page styles start */
+/* Products flex container */
 
-.container
+.productcontainer
 {
   margin :0 auto;
   display:inline-block;
@@ -305,7 +305,7 @@ textarea{
   padding-top: 20px;
 }
 
-input
+.productinput
 {
   border: 1px solid #ccc;
   font-weight: bold;
@@ -321,10 +321,9 @@ input
   font-size: 15px;
 }
 
-label {
+.productlabel {
   width: 75px;
   float:left;
 }
 
-
-/* Products page styles end */
+/* Products flex container end */
