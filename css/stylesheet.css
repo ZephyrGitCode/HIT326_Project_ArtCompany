@@ -288,7 +288,9 @@ textarea{
   flex: 1 16%;
 }
 
-
+.productimage{
+  width: 50%;
+}
 .productinput
 {
   border: 1px solid #ccc;
@@ -296,6 +298,7 @@ textarea{
   height: 30px;
   text-align: center;
   width: 30px;
+}
 
 .product-info {
   margin-top: auto;
