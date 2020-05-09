@@ -3,23 +3,6 @@
 
 <p><?php echo $message ?></p>
 
-   <!--
-<section class="products">
-
-  <div class="product-card">
-    <div class="product-image">
-      <img src="">
-    </div>
-    <div class="product-info">
-      <h5>Item</h5>
-      <h6>$99.99</h6>
-    </div>
-  </div>
-
-
-</section>
---->
-
 <?php
 
 if(!empty($arts)){
