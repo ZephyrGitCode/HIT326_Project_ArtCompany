@@ -129,12 +129,12 @@ function get_user_name(){
    return $name;	
 }
 
-function sign_in($fname,$password){
+function sign_in($useremail,$password){
    try{
       $db = get_db();  
-      $query = "SELECT id, salt, hashed_password FROM users WHERE fname=?";
+      $query = "SELECT email, salt, hashed_password FROM users WHERE email=?";
       if($statement = $db->prepare($query)){
-         $binding = array($fname);
+         $binding = array($useremail);
          if(!$statement -> execute($binding)){
                  throw new Exception("Could not execute query.");
          }
@@ -147,17 +147,17 @@ function sign_in($fname,$password){
             $_SESSION['hash'] = $result['hashed_password'];
             session_write_close();
             $hashed_password = $result['hashed_password'];
-            /*
-            if(generate_password_hash($password,$salt) !== $hashed_password){
+            
+            if(generate_password_hash($password,$salt) != $hashed_password){
                 throw new Exception("Account does not exist! .");
             }
             else{
-               $id = $result["id"];
-               set_authenticated_session($id,$hashed_password);
+               $email = $result["email"];
+               set_authenticated_session($email,$hashed_password);
             }
-            */
-            $id = $result["id"];
-            set_authenticated_session($id,$hashed_password);
+            
+            //$email = $result["email"];
+            //set_authenticated_session($email,$hashed_password);
          }
       }
       else{
@@ -200,13 +200,13 @@ function is_db_empty(){
 	
 }
 
-function set_authenticated_session($id,$password_hash){
+function set_authenticated_session($email,$password_hash){
       session_start();  
       
       //Make it a bit harder to session hijack
       session_regenerate_id(true);
 
-      $_SESSION["id"] = $id;
+      $_SESSION["email"] = $email;
       $_SESSION["hash"] = $password_hash;
       session_write_close();
 }
@@ -241,23 +241,23 @@ function validate_password($password){
 
 
 function is_authenticated(){
-    $id = "";
+    $email = "";
     $hash="";
     
     session_start();
-    if(!empty($_SESSION["id"]) && !empty($_SESSION["hash"])){
-       $id = $_SESSION["id"];
+    if(!empty($_SESSION["email"]) && !empty($_SESSION["hash"])){
+       $email = $_SESSION["email"];
        $hash = $_SESSION["hash"];
     }
     session_write_close();
  
-    if(!empty($id) && !empty($hash)){
+    if(!empty($email) && !empty($hash)){
 
         try{
            $db = get_db();
-           $query = "SELECT hashed_password FROM users WHERE id=?";
+           $query = "SELECT hashed_password FROM users WHERE email=?";
            if($statement = $db->prepare($query)){
-             $binding = array($id);
+             $binding = array($email);
              if(!$statement -> execute($binding)){
                 return false;
              }
@@ -281,8 +281,8 @@ function is_authenticated(){
 
 function sign_out(){
     session_start();
-    if(!empty($_SESSION["id"]) && !empty($_SESSION["hash"])){
-       $_SESSION["id"] = "";
+    if(!empty($_SESSION["email"]) && !empty($_SESSION["hash"])){
+       $_SESSION["email"] = "";
        $_SESSION["hash"] = ""; 
        $_SESSION = array();
        session_destroy();                     

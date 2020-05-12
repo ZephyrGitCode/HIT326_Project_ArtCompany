@@ -8,15 +8,10 @@
     
     <h2 class="form-h2 navforms">Darwin Art</h2>
     <hr style="margin-bottom:0;"/>
-    <div class="navforms forms">
-      <a href="/"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">house</span>Home</p></a>
-    </div>
-
     <h2 class="form-h2 navforms">Browse</h2>
-    
     <hr style="margin-bottom:0;"/>
     <div class="navforms forms">
-      <a href="index.php?all-art"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe3ad</span><span style="margin-bottom:5px;">All Art</span></p></a>
+      <a href="/"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe3ad</span><span style="margin-bottom:5px;">All Art</span></p></a>
     </div>
 
     <h2 class="form-h2 navforms">Manage</h2>
