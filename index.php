@@ -6,6 +6,8 @@ error_reporting(E_ERROR | E_PARSE);
 /* Set the path to the Application folder */
 DEFINE("LIB",$_SERVER['DOCUMENT_ROOT']."/lib/");
 
+//test
+
 /* SET VIEWS path */
 DEFINE("VIEWS",LIB."views/");
 DEFINE("PARTIALS",VIEWS."/partials");
