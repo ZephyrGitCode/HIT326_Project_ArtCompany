@@ -1,16 +1,6 @@
 <section class="products">
-
-<!--- Bootstrap stylesheets --->
-<head>
-  <link href="stylesheet.css" rel="stylesheet">
-  <link rel="stylesheet"
-  href=<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-</head>
-
 <!--- Product details container --->
+
 <body>
     <div class="productcontainer">
       <img class=productimage src="https://i.imgur.com/WijgGCs.png">
@@ -19,13 +9,13 @@
         <p><b>0nyxheart</b></p>
         <p class="price">AUD $12.50</p>
         <p><b>Size: </b>60x55cm</P>
+
         <label class=productlabel>Quantity:</label>
         <input class=productinput type="text" value="1">
         <button type="button" class="btn btn-default cart">
         Add to cart</button>
       </div>
     </div>
-</body>
 
 </section>
 
@@ -61,5 +51,5 @@ if(!empty($arts)){
   else{
     echo "<h2>No artworks to display</h2>";
 }
-?>
 */
+?>

@@ -6,6 +6,8 @@ error_reporting(E_ERROR | E_PARSE);
 /* Set the path to the Application folder */
 DEFINE("LIB",$_SERVER['DOCUMENT_ROOT']."/lib/");
 
+//test
+
 /* SET VIEWS path */
 DEFINE("VIEWS",LIB."views/");
 DEFINE("PARTIALS",VIEWS."/partials");
@@ -32,6 +34,7 @@ get("/",function($app){
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome to Darwin Art Company, please browse our wonderful selection of fine arts.");
    require MODEL;
+   $app->set_message("arts",get_products());
    $app->render(LAYOUT,"home");
 });
 
@@ -40,6 +43,7 @@ get("/art/1",function($app){
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
    require MODEL;
+   $app->set_message("arts", get_products());
    $app->render(LAYOUT,"art");
 });
 
@@ -57,11 +61,14 @@ get("/signin",function($app){
    require MODEL;
    try{
      if(is_authenticated()){
-        $app->set_message("error","Why on earth do you want to sign in again. You are already signed in. Perhaps you want to sign out first.");
-     }   
+        $app->set_message("message","Why on earth do you want to sign in again. You are already signed in. Perhaps you want to sign out first.");
+        $app->set_flash("You are already signed in");
+        $app->force_to_http("/");
+        header("location: /");
+      }   
    }
    catch(Exception $e){
-       $app->set_message("error",$e->getMessage($app));
+       $app->set_message("message",$e->getMessage($app));
    }
    $app->render(LAYOUT,"signin");
 });
@@ -97,11 +104,9 @@ get("/signup",function($app){
     $app->force_to_http("/signup");  
     require MODEL;
     $is_authenticated=false;
-    $is_db_empty=false;
-    /*
+    
     try{
        $is_authenticated = is_authenticated();
-       $is_db_empty = is_db_empty();
     }
     catch(Exception $e){
        $app->set_flash("We have a problem with DB. The gerbils are working on it."); 
@@ -109,16 +114,18 @@ get("/signup",function($app){
     }   
     
     if($is_authenticated){
-        $app->set_message("error","Create more accounts for other users.");
+        $app->set_message("message","You are already signed in.");
+        $app->set_flash("message","You are already signed in."); 
+        $app->force_to_http("/");
+        header("location: /");
     }
-    else if(!$is_authenticated && $is_db_empty){
-       $app->set_message("error","You are the SUPER USER. This account cannot be deleted. You are the boss. The only way to clear the SUPER USER from the database is to DROP the entire table. Please sign in after you have finished signing up.");  
+    else if(!$is_authenticated ){
+       //$app->set_message("error","You are the SUPER USER. This account cannot be deleted. You are the boss. The only way to clear the SUPER USER from the database is to DROP the entire table. Please sign in after you have finished signing up.");  
     }
     else{
        $app->set_flash("You are not authorised to access this resource yet. I'm gonna tell your mum if you don't sign in."); 
        $app->redirect_to("/signin");        
     }
-    */
     
    $app->set_message("title","Sign up");
    $app->render(LAYOUT,"signup");
@@ -178,7 +185,7 @@ get("/signout",function($app){
 post("/signup",function($app){
     require MODEL;
     try{
-        //if(is_authenticated() || is_db_empty()){
+        if(is_authenticated() || is_db_empty()){
           $fname = $app->form('fname');
           $lname = $app->form('lname');
           $email = $app->form('email');
@@ -200,26 +207,25 @@ post("/signup",function($app){
              $app->redirect_to("/signup");
           }
           $app->redirect_to("/signup");
-        //}
-        //else{
-        //   $app->set_flash("You are not authorised to access this resource");  
-        //   $app->redirect_to("/");           
-        //}
+        }
+        else{
+           $app->set_flash("You are not authenticated, please login");  
+           $app->redirect_to("/");           
+        }
     }
     catch(Exception $e){
-         //$app->set_flash($e.getMessage());  
+         $app->set_flash("{$e->getMessage()}");  
          $app->redirect_to("/");
     }
 });
 
 post("/signin",function($app){
-  $name = $app->form('fname');
-  $name = $app->form('lname');
+  $email = $app->form('email');
   $password = $app->form('password');
-  if($name && $password){
+  if($email && $password){
     require MODEL;
     try{
-       sign_in($fname,$lname,$password);
+       sign_in($email,$password);
     }
     catch(Exception $e){
       $app->set_flash("Could not sign you in. Try again. {$e->getMessage()}");

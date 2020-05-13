@@ -73,15 +73,17 @@ class Application{
        foreach($this->messages As $key => $val){
             $$key = $val;
        }
-       
 
        $flash = $this->get_flash();
 
        $content = VIEWS."/{$content}.php";
 
        if(!empty($layout)){
-          $users = get_users();
-          $arts = get_products();
+          if ($content == "home"){
+            //$users = get_users();
+            $arts = get_products();
+          }
+          
           require VIEWS."/{$layout}.layout.php";
        }
        else{
@@ -166,8 +168,8 @@ class Application{
     public static function resolve(){
 	  if(!static::$route_found){
 		$application = static::get_instance();
-		header("HTTP/1.0 404 Not Found");
-	    $application->render("standard","signup");	
+		header("location: /signup");
+	   $application->render("standard","signup");	
 	  }
     }
 
