@@ -21,12 +21,12 @@
 
 <!--- PHP for dynamic pages --->
 <?php
-/*
+
 if(!empty($arts)){
     echo "<h2>Artworks</h2>";
     foreach($arts As $art){
       $artno = htmlspecialchars($art['artNo'],ENT_QUOTES, 'UTF-8');
-      if ($artno == 1){
+      if ($artno == $id){
         $title = htmlspecialchars($art['title'],ENT_QUOTES, 'UTF-8');
         $artdesc = htmlspecialchars($art['artdesc'],ENT_QUOTES, 'UTF-8');
         $price = htmlspecialchars("$".$art['price'],ENT_QUOTES, 'UTF-8');
@@ -51,5 +51,5 @@ if(!empty($arts)){
   else{
     echo "<h2>No artworks to display</h2>";
 }
-*/
+
 ?>
