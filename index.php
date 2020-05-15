@@ -50,23 +50,18 @@ get("/art/:id;[\d]",function($app){
 });
 
 
-if(isset($_GET['myaccount'])){
-
-   
-   //exit();
-}
-
-get("/myaccount/:id]",function($app){
-   $id = 'id';
+get("/myaccount/:id;[\w]",function($app){
+   $id = $app->route_var("id");;
    $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Welcome");
+   $app->set_message("message","Welcome".$id);
+   $app->set_flash("info".$id);
    require MODEL;
    try{
       if(is_authenticated()){
          $app->set_flash("User is logged in");
-         $app->force_to_http("/myaccount/".$id);
+         //$app->force_to_http("/myaccount/".$id);
          //header("location: /".$id);
-         //$app->render(LAYOUT,"myaccount");
+         $app->render(LAYOUT,"myaccount");
        }   
     }
     catch(Exception $e){

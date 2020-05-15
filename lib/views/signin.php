@@ -1,5 +1,5 @@
 <h1>Sign in</h1>
-<div>
+<div>    
 <form action='/signin' method='POST'>
  <input type='hidden' name='_method' value='post' />
  <?php
