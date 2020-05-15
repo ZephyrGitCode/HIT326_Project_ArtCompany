@@ -47,6 +47,14 @@ get("/art/1",function($app){
    $app->render(LAYOUT,"art");
 });
 
+get("/myaccount",function($app){
+   $app->force_to_http("/myaccount");
+   $app->set_message("title","Darwin Art Company");
+   $app->set_message("message","Welcome");
+   require MODEL;
+   $app->render(LAYOUT,"myaccount");
+});
+
 get("/signin",function($app){
    $app->force_to_http("/signin");
    $app->set_message("title","Sign in");
