@@ -30,7 +30,7 @@ require APP;
 /* The following are just examples of how you might set up a basic app with authentication */
 
 get("/",function($app){
-   $app->force_to_http("/");
+   //$app->force_to_http("/");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome to Darwin Art Company, please browse our wonderful selection of fine arts.");
    require MODEL;
@@ -38,21 +38,41 @@ get("/",function($app){
    $app->render(LAYOUT,"home");
 });
 
-get("/art/1",function($app){
-   $app->force_to_http("/art/1");
+get("/art/:id;[\d]",function($app){
+   //$app->force_to_http("/art/1");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
    require MODEL;
+   $id = $app->route_var("id");
    $app->set_message("arts", get_products());
+   $app->set_message("id", $id);
    $app->render(LAYOUT,"art");
 });
 
-get("/myaccount",function($app){
-   $app->force_to_http("/myaccount");
+
+if(isset($_GET['myaccount'])){
+
+   
+   //exit();
+}
+
+get("/myaccount/:id]",function($app){
+   $id = 'id';
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
    require MODEL;
-   $app->render(LAYOUT,"myaccount");
+   try{
+      if(is_authenticated()){
+         $app->set_flash("User is logged in");
+         $app->force_to_http("/myaccount/".$id);
+         //header("location: /".$id);
+         //$app->render(LAYOUT,"myaccount");
+       }   
+    }
+    catch(Exception $e){
+        $app->set_message("message",$e->getMessage($app));
+    }
+   $app->render(LAYOUT,"/signin");
 });
 
 get("/signin",function($app){
@@ -71,33 +91,6 @@ get("/signin",function($app){
        $app->set_message("message",$e->getMessage($app));
    }
    $app->render(LAYOUT,"signin");
-});
-
-get("/user/:id",function($app){
-   $id = $app->route_var('id');
-   if(is_numeric($id)){
-      $app->force_to_http("/user");
-      $name="";
-      require MODEL;
-      try{
-         if(is_authenticated()){
-            $app->set_message("authenticated",true);
-            $name = $user->get_user_name($app->route_var("id"));
-         }
-         else if(is_db_empty()){
-            $app->redirect_to('/signup');
-         }
-      }
-      catch(Exception $e){
-         $app->set_message("error, ",$e->getMessage());
-      }
-         $app->set_message("title","User");
-         $app->set_message("name",$name);
-         $app->render(LAYOUT,"user");
-      }
-      else{
-         $app->reset_route(); //will see later how to improve this
-   }
 });
 
 get("/signup",function($app){

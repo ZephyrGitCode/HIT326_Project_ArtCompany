@@ -30,6 +30,8 @@ class Application{
     /* Added properties */
     private $messages = array();
     private $method = "";
+    private $route_segments = array();
+    private $route_variables = array();
     
     public static function get_instance(){
         if(!isset(static::$instance)){
@@ -38,34 +40,102 @@ class Application{
         return static::$instance;
     }
     
-    protected function __construct(){
-        $this->route = $this->get_route();
-        /* New */
-        $this->method = $this->get_method();
-    }
     
+    protected function __construct(){
+      $this->route = $this->get_route();
+      $this->method = $this->get_method();
+      $this->route_segments = explode("/",trim($this->route,"/"));
+  }
+    
+    public function accepts($accept="text/html"){
+      $accept_header = "";
+  
+      if(!empty($_SERVER['HTTP_ACCEPT'])){
+         $accept_header = strtolower($_SERVER['HTTP_ACCEPT']);
+      }
+
+      if(!empty($accept_header)){
+        $accept = str_replace("/","\/",$accept);
+        $accept = str_replace("+","\+",$accept);
+
+        if(preg_match("/{$accept}/i",$accept_header)){
+            return true;
+        }
+      }
+      return false;
+    }
+
     public function get_route(){
       return $_SERVER['REQUEST_URI'];  
     }
-    
     public static function register($route,$callback, $method){
-        $application = static::get_instance();
-        /* NEW addition of method at end */
-        if($route == $application->route && !static::$route_found && $application->method == $method){
-            static::$route_found = true;
-            echo $callback($application);
-        }
-        else{
-            return false;
-        }
-    }
-    
+      if(!static::$route_found){
+         $application = static::get_instance();
+         $url_parts = explode("/",trim($route,"/"));
+         $matched = null;
+       
+         if(count($application->route_segments) == count($url_parts)){
+            foreach($url_parts as $key=>$part){
+               if(strpos($part,":") !== false){    
+                   //This means we have a route variable
+
+                   //Reject if URI segment is empty? e.g. /admin/user/12. is /admin//12. Invalid URI.
+                   if(empty($application->route_segments[$key])){
+                       $matched = false;
+                       break;
+                   }
+
+                  if(strpos($part,";") !== false){
+                      //means we have a regex
+                      $parts = explode(";",trim($part," "));
+
+                     if(count($parts === 2)){                    
+                        if(!preg_match("/^{$parts[1]}$/",$application->route_segments[$key])){
+                            $matched = false;
+                            break;
+                        }
+                     }
+                     $part = $parts[0];
+                   }
+                   $application->route_variables[substr($part,1)] = $application->route_segments[$key];
+                   $matched = true;
+               }
+               else{
+                 //Means we do not have a route variable
+                 if($part == $application->route_segments[$key]){  
+                     if(!$matched){
+                        $matched = true;                         
+                     }
+                 }
+                 else{
+                    //Means routes don't match
+                    $matched = false;
+                    break;
+                 }           
+               }
+            }
+         }
+         else{
+           //The routes have different sizes i.e. they don't match
+            $matched = false;
+         }
+
+         if(!$matched || $application->method != $method){
+           if(!$matched){
+              $matcher = "NULL";
+           }
+           return false;
+         }
+         else{
+           static::$route_found = true;
+           echo $callback($application);
+         }
+      }     
+   }
+   
     public function route_var($key){
       return $this->route_variables[$key];
    }
-    /* All the the methods below come from week 6 functions in application.php i.e. example 17*/
-
-
 
     /* Application functions called by the controller code */
     public function render($layout, $content){
@@ -106,29 +176,46 @@ class Application{
     }
 
     public function get_method(){
-       if(strtoupper($this->form("_method")) === "POST"){
-          return "POST";
+       $request_method = "";
+       
+       if(!empty($_SERVER['REQUEST_METHOD'])){
+             $request_method = strtoupper($_SERVER['REQUEST_METHOD']);
        }
-       if(strtoupper($this->form("_method")) === "PUT"){
-          return "PUT";
+              
+       if($request_method === "POST"){
+	       $method = strtoupper($this->form("_method"));
+           if($method === "POST"){
+              return "POST";
+           }
+           if($method === "PUT"){
+              return "PUT";
+           }
+           if($method === "DELETE"){
+              return "DELETE";
+           }   
+           return "POST";
        }
-       if(strtoupper($this->form("_method")) === "DELETE"){
-          return "DELETE";
+       if($request_method === "PUT"){
+            return "PUT";
+       }
+
+       if($request_method === "DELETE"){
+            return "DELETE";
        }
        return "GET";
     }
 
-    public function form($key){
-       if(!empty($_POST[$key])){
-          return $_POST[$key];
-       }
-       return false;
-    }
-
     public function redirect_to($path="/"){
-       header("Location: {$path}");
-       exit();
-    }
+      header("Location: {$path}");
+      exit();
+   }
+
+    public function form($key){
+      if(!empty($_POST[$key])){
+         return $_POST[$key];
+      }
+      return false;
+   }
 
     public function set_session_message($key,$message){
        if(!empty($key) && !empty($message)){
@@ -163,16 +250,16 @@ class Application{
     public function set_message($key,$value){
       $this->messages[$key] = $value;
     }
-
-    /* New to handle 404 error */
+   
+    
+     //New to handle 404 error 
     public static function resolve(){
 	  if(!static::$route_found){
 		$application = static::get_instance();
-		header("location: /signup");
-	   $application->render("standard","signup");	
+		//header("location: /signup");
+	   $application->render("standard","signin");	
 	  }
     }
-
 
 
 
