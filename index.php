@@ -38,7 +38,7 @@ get("/",function($app){
    $app->render(LAYOUT,"home");
 });
 
-get("/art/:id;[\d]",function($app){
+get("/art/:id;[\d]+",function($app){
    //$app->force_to_http("/art/1");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome");
@@ -50,8 +50,8 @@ get("/art/:id;[\d]",function($app){
 });
 
 
-get("/myaccount/:id;[\w]",function($app){
-   $id = $app->route_var("id");;
+get("/myaccount/:id;[\w]+",function($app){
+   $id = $app->route_var("id");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome".$id);
    $app->set_flash("info".$id);
