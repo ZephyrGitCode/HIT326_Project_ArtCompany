@@ -68,6 +68,7 @@ class Application{
     public function get_route(){
       return $_SERVER['REQUEST_URI'];  
     }
+    
     public static function register($route,$callback, $method){
       if(!static::$route_found){
          $application = static::get_instance();

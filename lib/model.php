@@ -155,9 +155,6 @@ function sign_in($useremail,$password){
                $email = $result["email"];
                set_authenticated_session($email,$hashed_password);
             }
-            
-            //$email = $result["email"];
-            //set_authenticated_session($email,$hashed_password);
          }
       }
       else{
