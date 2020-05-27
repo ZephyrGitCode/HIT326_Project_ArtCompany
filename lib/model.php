@@ -132,7 +132,7 @@ function get_user_name(){
 function sign_in($useremail,$password){
    try{
       $db = get_db();  
-      $query = "SELECT email, salt, hashed_password FROM users WHERE email=?";
+      $query = "SELECT id, email, salt, hashed_password FROM users WHERE email=?";
       if($statement = $db->prepare($query)){
          $binding = array($useremail);
          if(!$statement -> execute($binding)){
@@ -153,7 +153,8 @@ function sign_in($useremail,$password){
             }
             else{
                $email = $result["email"];
-               set_authenticated_session($email,$hashed_password);
+               $userno = $result["id"];
+               set_authenticated_session($email,$hashed_password, $userno);
             }
          }
       }
@@ -197,12 +198,12 @@ function is_db_empty(){
 	
 }
 
-function set_authenticated_session($email,$password_hash){
+function set_authenticated_session($email,$password_hash, $userno){
       session_start();  
       
       //Make it a bit harder to session hijack
       session_regenerate_id(true);
-
+      $_SESSION["userno"] = $userno;
       $_SESSION["email"] = $email;
       $_SESSION["hash"] = $password_hash;
       session_write_close();

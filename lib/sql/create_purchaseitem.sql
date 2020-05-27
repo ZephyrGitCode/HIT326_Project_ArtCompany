@@ -9,3 +9,7 @@ CREATE TABLE `purchaseitem` (
   CONSTRAINT FOREIGN KEY (artNo) REFERENCES art(artNo),
   quantity int(3) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+# purchaseitem
+INSERT INTO `purchaseitem` (`itemNo`, `purchaseNo`, `artNo`, `quantity`) VALUES (NULL, '1', '1', '2');
+INSERT INTO `purchaseitem` (`itemNo`, `purchaseNo`, `artNo`, `quantity`) VALUES (NULL, '2', '1', '1');
