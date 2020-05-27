@@ -34,7 +34,12 @@ get("/",function($app){
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome to Darwin Art Company, please browse our wonderful selection of fine arts.");
    require MODEL;
-   $app->set_message("arts",get_products());
+   try{
+      $app->set_message("arts",get_products());
+   }catch(Exception $e){
+      // Failed to load DB
+   }
+   
    $app->render(LAYOUT,"home");
 });
 
@@ -54,13 +59,9 @@ get("/myaccount/:id;[\w]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome".$id);
-   $app->set_flash("info".$id);
    require MODEL;
    try{
       if(is_authenticated()){
-         $app->set_flash("User is logged in");
-         //$app->force_to_http("/myaccount/".$id);
-         //header("location: /".$id);
          $app->render(LAYOUT,"myaccount");
        }   
     }
@@ -173,7 +174,7 @@ get("/signout",function($app){
 post("/signup",function($app){
     require MODEL;
     try{
-        if(is_authenticated() || is_db_empty()){
+        if(!is_authenticated()){
           $fname = $app->form('fname');
           $lname = $app->form('lname');
           $email = $app->form('email');
@@ -183,7 +184,8 @@ post("/signup",function($app){
           if($fname && $lname && $email && $pw && $confirm){
               try{
                 sign_up($fname,$lname,$email,$pw,$confirm);
-                $app->set_flash(htmlspecialchars($app->form('name'))." is now signed up ");    
+                $app->set_flash("Welcome ".$fname.", now please sign in"); 
+                $app->redirect_to("/");   
              }
              catch(Exception $e){
                   $app->set_flash($e->getMessage());  

@@ -1,6 +1,8 @@
 USE art_db;
 
 CREATE TABLE `users` (
+  id int(11) NOT NULL auto_increment,
+  PRIMARY KEY (id),
   title varchar(10),
   fname varchar(40) NOT NULL,
   lname varchar(40) NOT NULL,
@@ -14,21 +16,17 @@ CREATE TABLE `users` (
   # Assuming SHA256 hash
   hashed_password char(64) NOT NULL,
   # Assuming 16 chars in salt
-  salt char(16) NOT NULL,
-  PRIMARY KEY (email)
+  salt char(16) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-USE art_db;
 
 CREATE TABLE `purchase` (
   purchaseNo int(11) NOT NULL auto_increment,
   PRIMARY KEY (purchaseNo),
-  user_email varchar(60) NOT NULL,
-  CONSTRAINT FOREIGN KEY (user_email) REFERENCES users(email),
+  id int(11) NOT NULL,
+  CONSTRAINT FOREIGN KEY (id) REFERENCES users(id),
   pdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-USE art_db;
 
 CREATE TABLE `art` (
   artNo int(11) NOT NULL auto_increment,
@@ -41,7 +39,6 @@ CREATE TABLE `art` (
   PRIMARY KEY (artNo)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-USE art_db;
 
 CREATE TABLE `purchaseitem` (
   itemNo int(11) NOT NULL auto_increment,
@@ -52,12 +49,6 @@ CREATE TABLE `purchaseitem` (
   CONSTRAINT FOREIGN KEY (artNo) REFERENCES art(artNo),
   quantity int(3) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-use art_db;
-
-# Users
-INSERT INTO `users` (`title`, `fname`, `lname`, `email`, `shipping_address`, `city`, `shipping_state`, `country`, `postcode`, `phone`, `hashed_password`, `salt`) VALUES ('Ms.', 'Sarah', 'O\'lachlan', 'sarah@gmail.com', '21 Melody Street', 'Darwin', 'NT', 'Australia', '', '0474567321', '1234', '1234');
-INSERT INTO `users` (`title`, `fname`, `lname`, `email`, `shipping_address`, `city`, `shipping_state`, `country`, `postcode`, `phone`, `hashed_password`, `salt`) VALUES ('Mr.', 'Zephyr', 'Dobson', 'zephyr.dobson@outlook.com', '21 Melody Street', 'Darwin', 'NT', 'Australia', '', '0474567321', '1234', '1234');
 
 # Artworks
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'Sonic Meme', 'That one sonic meme', '12.50', 'Hand Drawn', '60x55 cm', 'https://i.imgur.com/WijgGCs.png');
@@ -70,11 +61,3 @@ INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `li
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'Girl with a Pearl Earring', 'A beautiful figure', '60', 'Painted', '44x39 cm', 'https://i.imgur.com/CeFjsBd.jpg');
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'Ugandan Knuckles', 'Do you know the way?', '15', 'Hand Drawn', '50x50 cm', 'https://i.imgur.com/cJwaIPk.jpg');
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'The Persistence of Memory', 'Famous surrealism', '55', 'Painted', '30x25 cm', 'https://i.imgur.com/jn3dSsy.jpg');
-
-# purchase
-INSERT INTO `purchase` (`purchaseNo`, `user_email`, `pdate`) VALUES (NULL, 'zephyr.dobson@outlook.com', current_timestamp());
-INSERT INTO `purchase` (`purchaseNo`, `user_email`, `pdate`) VALUES (NULL, 'sarah@gmail.com', '2020-05-08');
-
-# purchaseitem
-INSERT INTO `purchaseitem` (`itemNo`, `purchaseNo`, `artNo`, `quantity`) VALUES (NULL, '1', '1', '2');
-INSERT INTO `purchaseitem` (`itemNo`, `purchaseNo`, `artNo`, `quantity`) VALUES (NULL, '2', '1', '1');

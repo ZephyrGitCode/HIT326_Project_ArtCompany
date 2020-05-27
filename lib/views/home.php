@@ -28,7 +28,7 @@ if(!empty($arts)){
     }
   }
   else{
-    echo "<h2>No artworks to display</h2>";
+    echo "<h2>Database Failed to load.</h2>";
 }
 ?>
 

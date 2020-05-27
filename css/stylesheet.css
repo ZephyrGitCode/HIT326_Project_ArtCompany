@@ -279,7 +279,6 @@ textarea{
 {
   margin :0 auto;
   display:inline-block;
-  width: 850px;
   padding: 20px 40px 40px;
   max-width: 640px;
 }
@@ -332,12 +331,8 @@ textarea{
 
 .userBox
 {
-  position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
-  width: 350px;
-  min-height: 200px;
   background: #2B2B2B;
   border-radius: 10px;
   padding: 40px;
