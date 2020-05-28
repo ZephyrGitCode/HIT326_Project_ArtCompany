@@ -1,6 +1,8 @@
 /* General */
  
-
+.btn{
+  background-color: #3bd494ad;
+}
  /*Sign up and Login Page Start*/
 
  form{
@@ -51,7 +53,7 @@ a:hover{
 }
 /* Sign up and Login Page End*/
 
-/* Home / Dashboard start */
+/* Home start */
 .dashbody{
   margin: 18px 0 0 18px;
   overflow-y: scroll;
@@ -86,7 +88,7 @@ a:hover{
   margin-bottom: .2rem;
 }
 
-/*Dashboard End*/
+/* Home End*/
 
 /* Side navigation Start - Code modifed from original (https://www.w3schools.com/howto/howto_js_sidenav.asp)*/
 .navbar{

@@ -29,6 +29,9 @@
           if(!empty($flash)){
             echo "<p class='flash'>{$flash}</p>";
           }
+          if(!empty($note)){
+            echo "<p class='note'>{$note}</p>";
+          }
           if(!empty($error)){
             echo "<p class='flash'>{$error}</p>";	
           }
