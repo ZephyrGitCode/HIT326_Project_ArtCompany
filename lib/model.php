@@ -38,6 +38,7 @@ function get_products(){
    try{
       $db = get_db();
       $query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      //add author
       $statement = $db->prepare($query);
       $statement -> execute();
       $arts = $statement->fetchall(PDO::FETCH_ASSOC);
