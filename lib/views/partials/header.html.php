@@ -1,7 +1,7 @@
 <header class="navbar">
   <span style="font-size:30px;cursor:pointer;color:white" onclick="openNav()">&#9776;</span>
   <h2 class="main-h2">Darwin Art Company</h2>
-  <a href="<?php echo "/myaccount/{$_SESSION['userno']}";?>"><span class="material-icons usericon">&#xe8a6</span></a>
+  <a href="<?php if ($_SESSION['userno'] != ""){echo "/myaccount/{$_SESSION['userno']}";}else{echo "/myaccount/123";}?>"><span class="material-icons usericon">&#xe8a6</span></a>
   <a href="/cart"><span class="material-icons usericon">&#xe854</span></a>
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -18,12 +18,21 @@
     
     <hr style="margin-bottom:0;"/>
     <div class="navforms forms">
-    <a href="/signup"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signup</p></a>
-      <a href="/signin"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signin</p></a>
+    <?php
+      if (is_authenticated()){
+    ?>
+      <a href="<?php if ($_SESSION['userno'] != ""){echo "/myaccount/{$_SESSION['userno']}";}else{echo "/myaccount/123";}?>"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe869</span>My Account</p></a>
       <a href="/signout"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signout</p></a>
-      <a href="/myaccount"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe869</span>My Account</p></a>
+    <?php
+        }else{
+    ?>
+      <a href="/signup"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signup</p></a>
+      <a href="/signin"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signin</p></a>
+    <?php
+      }
+    ?>
+      
     </div>
     <a href="#">About</a>
-    <a href="/signout">Logout</a>
   </div>
 </header>

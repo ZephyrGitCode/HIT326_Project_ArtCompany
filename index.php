@@ -55,7 +55,7 @@ get("/art/:id;[\d]+",function($app){
 });
 
 
-get("/myaccount/:id;[\w]+",function($app){
+get("/myaccount/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Welcome".$id);
@@ -68,6 +68,7 @@ get("/myaccount/:id;[\w]+",function($app){
     catch(Exception $e){
         $app->set_message("message",$e->getMessage($app));
     }
+   $app->set_message("note", "You must be logged in to see your account");
    $app->render(LAYOUT,"/signin");
 });
 
@@ -226,7 +227,7 @@ post("/signin",function($app){
        $app->set_flash("Something wrong with name or password. Try again.");
        $app->redirect_to("/signin");
   }
-  $app->set_flash("Lovely, you are now signed in!");
+  $app->set_message("note","Lovely, you are now signed in!");
   $app->redirect_to("/");
 });
 
