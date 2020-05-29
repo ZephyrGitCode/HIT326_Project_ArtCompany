@@ -1,8 +1,15 @@
 /* General */
  
 .btn{
-  background-color: #3bd494ad;
+  background-color: #1154AB;
+  color: #ffffff;
 }
+
+.btn:hover{
+  background-color: #0F4892;
+  color: #ffffff;
+}
+
  /*Sign up and Login Page Start*/
 
  form{
@@ -21,7 +28,7 @@
 
 .log-h2{
   text-align: center;
-  color:#48535f;
+  color:#ddd;
   font-weight:400;
   margin-bottom:25px;
 }
@@ -38,18 +45,22 @@ input{
 }
 
 .log-button{
-  background-color: #47525e;
+  background-color: #1154AB;
   text-align:center;
   color: #ffffff;
   font-size: 18px;
 }
 
+.log-button:hover{
+  background-color: #0F4892;
+}
+
 a{
-  color: #8190a5;
+  color: #B6B1A6;
 }
 
 a:hover{
-  color:#48535f;
+  color: #C8C4BC;
 }
 /* Sign up and Login Page End*/
 
