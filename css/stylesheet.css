@@ -91,7 +91,7 @@ a:hover{
 /* Side navigation Start - Code modifed from original (https://www.w3schools.com/howto/howto_js_sidenav.asp)*/
 .navbar{
   background-color: #858d96;
-  background-color: #2b2b2b;
+  background-color: #1F1F1F;
   padding-bottom: 12px;
 }
 
@@ -107,7 +107,7 @@ a:hover{
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #ffffff;
+  background-color: #181A1B;
   overflow-x: hidden;
   transition: 0.5s;
 }
@@ -116,7 +116,7 @@ a:hover{
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
-  color: #818181;
+  color: #BAB5AB;
   display: block;
   transition: 0.3s;
 }
@@ -146,7 +146,7 @@ a:hover{
 .forms{
   margin: 0px 0px 10px 0px;
   padding-left:5px;
-  background-color: #f9fafc;
+  background-color: #1A1C1D;
 }
 
 .navforms a{
@@ -156,7 +156,7 @@ a:hover{
 
 
 .form-h2{
-  color:#48535f;
+  color:#BAB5AB;
   font-weight:400;
   font-size: 1.4rem;
 }
@@ -164,7 +164,7 @@ a:hover{
 .main-h2{
   margin: auto;
   margin-left: 25px;
-  color: white;
+  color: #E2E2E2;
   font-size:1.2rem;
 }
 
@@ -293,6 +293,7 @@ textarea{
 
 .price
 {
+  color: #FE980F;
   font-size: 26px;
   font-weight: bold;
   padding-top: 20px;
