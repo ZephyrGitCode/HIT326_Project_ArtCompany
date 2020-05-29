@@ -181,6 +181,11 @@ a:hover{
   font-size:1.2rem;
 }
 
+.logo-nav{
+    display: inline-block;
+    margin: 25px 10px;
+  }
+
 @media only screen and (max-width: 360px) {
   .main-h2 {font-size: 1.3rem;}
 }
