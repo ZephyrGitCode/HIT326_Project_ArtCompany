@@ -38,6 +38,7 @@ function get_products(){
    try{
       $db = get_db();
       $query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
+      //add author
       $statement = $db->prepare($query);
       $statement -> execute();
       $arts = $statement->fetchall(PDO::FETCH_ASSOC);
@@ -85,8 +86,8 @@ function sign_up($fname, $lname, $email, $password, $password_confirm){
 function get_user_id(){
    $id="";
    session_start();  
-   if(!empty($_SESSION["id"])){
-      $id = $_SESSION["id"];
+   if(!empty($_SESSION["userno"])){
+      $id = $_SESSION["userno"];
    }
    session_write_close();
    return $id;	
@@ -96,18 +97,18 @@ function get_user_name(){
    $id="";
    $name="";
    session_start();  
-   if(!empty($_SESSION["id"])){
-      $id = $_SESSION["id"];
+   if(!empty($_SESSION["userno"])){
+      $id = $_SESSION["userno"];
    }
    session_write_close();
-
+   
    if(empty($id)){
      throw new Exception("User has no valid id");	
    }
 	
    try{
       $db = get_db();  
-      $query = "SELECT name FROM users WHERE id=?";
+      $query = "SELECT fname FROM users WHERE id=?";
       if($statement = $db->prepare($query)){
          $binding = array($id);
          if(!$statement -> execute($binding)){
@@ -115,7 +116,7 @@ function get_user_name(){
          }
          else{
             $result = $statement->fetch(PDO::FETCH_ASSOC);
-            $name = $result['name'];
+            $name = $result['fname'];
          }
       }
       else{
@@ -279,9 +280,10 @@ function is_authenticated(){
 
 function sign_out(){
     session_start();
-    if(!empty($_SESSION["email"]) && !empty($_SESSION["hash"])){
+    if( !empty($_SESSION["email"]) && !empty($_SESSION["hash"]) && !empty($_SESSION["userno"]) ){
        $_SESSION["email"] = "";
-       $_SESSION["hash"] = ""; 
+       $_SESSION["hash"] = "";
+       $_SESSION["userno"] == "";
        $_SESSION = array();
        session_destroy();                     
     }
@@ -290,6 +292,6 @@ function sign_out(){
 
 
 function change_password($user_id, $old_pw, $new_pw, $pw_confirm){
-
-
+   // Write change password function here
+   return "success";
 }
