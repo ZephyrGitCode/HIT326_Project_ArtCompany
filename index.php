@@ -121,7 +121,8 @@ get("/signup",function($app){
    $app->render(LAYOUT,"signup");
 });
 
-get("/change",function($app){
+get("/change/:id[\d]+",function($app){
+   $id = $app->route_var("id");
    $app->force_to_http("/change");
    $app->set_message("title","Change password");
    require MODEL;
@@ -231,10 +232,48 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-put("/change",function($app){
-  // Not complete because can't handle complex routes like /change/23
-  $app->set_flash("Password is changed");
-  $app->redirect_to("/");
+put("/change/:id[\d]+",function($app){
+   // Not complete because can't handle complex routes like /change/23
+   //$app->set_flash("Password is changed");
+   //$app->redirect_to("/");
+
+   $id = $app->route_var("id");
+   $app->force_to_http("/change");
+   $app->set_message("title","Change password");
+   require MODEL;
+   try{
+      if(!is_authenticated()){
+         $pw_old = $app->form('old-password');
+         $pw_new = $app->form('password');
+         $pw_confirm = $app->form('passw-c');
+
+         if($pw_old && $pw_new && $pw_confirm){
+            try{
+               $return = change_password($id,$pw_old,$pw_new,$pw_confirm);
+               $app->set_flash($return);
+               $app->set_message("note","Password successfully changed."); 
+               $app->redirect_to("/");   
+            }
+            catch(Exception $e){
+               $app->set_flash($e->getMessage());  
+               $app->redirect_to("/");          
+            }
+         }
+         else{
+            $app->set_flash("Field entry failed, incorrect credentials.");  
+            //$app->redirect_to("/change/:id[\d]+");
+         }
+         $app->redirect_to("/");
+      }
+      else{
+         $app->set_flash("You are not logged in.");  
+         $app->redirect_to("/");           
+      }
+   }
+   catch(Exception $e){
+      $app->set_flash("{$e->getMessage()}");  
+      $app->redirect_to("/");
+   }
 });
 
 # The Delete call back is left for you to work out
