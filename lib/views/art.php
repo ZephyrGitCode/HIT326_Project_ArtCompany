@@ -22,12 +22,12 @@ if(!empty($arts)){
         <img class="productimage" src="<?php echo "{$image}" ?>" class="artimage"/>
         <div class="producttext">
           <h2><i><?php echo "{$title}"?></i></h2>
-          <p><b>Author: placeholder<?php //echo "{$author}" ?></b></p>
+          <p><b>Author: 0nyxheart<?php //echo "{$author}" ?></b></p>
           <p class="price">AUD <?php echo "{$price}" ?></p>
           <p><b>Size: </b><?php echo "{$size}" ?></P>
 
           <label class="productlabel">Quantity:</label>
-          <input class="productinput" id="quantity" type="number" value="1">
+          <input class="productinput" id="quantity" type="number" value="1" min=0 oninput="validity.valid||(value='');">
           <button type="button" class="btn btn-default cart">
           Add to cart</button>
         </div>

@@ -1,11 +1,21 @@
 body{
-  background: #eee;
+  background: #121212;
+}
+
+input{
+  background: #242424;
+  border: 2px solid #1F1F1F;
+  border-radius: 3px;
+  color: #ddd;
 }
 
 #content{
+  clear:both;
+  background:#121212;
+  padding:1em;
+  color: #DAD7D2;
   clear: both;
   padding: 1em;
-  border-radius: 3px 3px 0 0;
 }
 
 .flash{

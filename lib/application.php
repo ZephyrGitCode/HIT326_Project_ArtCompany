@@ -258,7 +258,8 @@ class Application{
 	  if(!static::$route_found){
 		$application = static::get_instance();
 		//header("location: /signup");
-	   $application->render("standard","signin");	
+      //$application->render("standard","signin");
+      $application->render("standard","myaccount");
 	  }
     }
 
