@@ -1,5 +1,10 @@
 /* General */
- 
+
+body{
+  background-color: rgb(31, 31, 31);
+}
+
+
 .btn{
   background-color: #1154AB;
   color: #ffffff;
@@ -85,26 +90,15 @@ a:hover{
   margin-left: 0px;
 }
 
-.dcarcontent{
-  width: 100%;
+.inspect{
+  color: #a469b3;
+  text-decoration: underline;
 }
-
-.vtitle{
-  font-size:1.2rem;
-  margin-bottom: .6rem;
-}
-
-.vbody{
-  font-size: .8rem;
-  margin-bottom: .2rem;
-}
-
 /* Home End*/
 
 /* Side navigation Start - Code modifed from original (https://www.w3schools.com/howto/howto_js_sidenav.asp)*/
 .navbar{
-  background-color: #858d96;
-  background-color: #1F1F1F;
+  background-color: #59136b;
   padding-bottom: 12px;
 }
 
@@ -120,6 +114,7 @@ a:hover{
   z-index: 1;
   top: 0;
   left: 0;
+  /*background-color: #59136b;*/
   background-color: #181A1B;
   overflow-x: hidden;
   transition: 0.5s;
@@ -129,7 +124,8 @@ a:hover{
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
-  color: #BAB5AB;
+  /*color: #BAB5AB;*/
+  color: #ffffff;
   display: block;
   transition: 0.3s;
 }
@@ -159,7 +155,8 @@ a:hover{
 .forms{
   margin: 0px 0px 10px 0px;
   padding-left:5px;
-  background-color: #1A1C1D;
+  background-color: #59136b;
+  /*background-color: #1A1C1D;*/
 }
 
 .navforms a{
@@ -169,14 +166,15 @@ a:hover{
 
 
 .form-h2{
-  color:#BAB5AB;
+  /*color:#BAB5AB;*/
+  color: #ffffff;
   font-weight:400;
   font-size: 1.4rem;
 }
 
 .main-h2{
-  margin: auto;
-  margin-left: 25px;
+  margin-top: auto;
+  margin-bottom: auto;
   color: #E2E2E2;
   font-size:1.2rem;
 }
@@ -199,77 +197,6 @@ a:hover{
 
 /* Side navigation End */
 
-/* Bottom Nav Start */
-.bottom-nav{
-  border-top: solid lightgrey 1px;
-  background-color: white;
-  background-color: #2b2b2b;
-  bottom: 0;
-  width: 100%;
-  margin: auto;
-  display: flex;
-  position: fixed;
-  text-align: center;
-  color: black;
-}
-
-.icons{
-  font-size: 1.8rem;
-  padding: 8px 0 8px 0;
-  color: #f5f5f5;
-}
-
-/* Bottom Nav End */
-
-/* Add-new button Start */
-.add-new-button {
-  position: fixed;
-  padding-top: 0;
-  bottom: 50px;
-  right: 50px;
-  font-size: 52px;
-  margin-left: 50px;
-}
-/* Add-new button End */
-
-
-/* New-vehicle Form Start */
-
-.allentryforms{
-  width: 70%;
-  border-width: 0 0 2px 0;
-}
-
-.allentryforms input{
-  border-width: 0 0 2px 0;
-  padding: 4px;
-}
-
-#statusdrop, #driverdrop, #vleasestart, #vleaseend, #cardrop{
-  width: 100%;
-}
-
-.allentryforms p{
-  margin-bottom: 0px;
-  margin-top: 10px;
-}
-
-.done-button {
-  position: absolute;
-  top: 0;
-  right: 20px;
-  font-size: 36px;
-  color: white;
-  background: none;
-  border: none;
-  margin: auto;
-  width: 50px;
-}
-
-form select{
-  max-width: -webkit-fill-available;
-}
-/* New-vehicle Form End */
 
 /* Other form styles start */
 input[type="date"]{
@@ -339,7 +266,7 @@ textarea{
 /* Products flex container end */
 
 /* My Account styles start */
-
+/*
 .accountBody
 {
   margin: 0;
@@ -347,14 +274,14 @@ textarea{
   font-family: sans-serif;
   color: #ffffff;
 }
-
+*/
 .userBox
 {
   top: 50%;
   left: 50%;
   background: #2B2B2B;
   border-radius: 10px;
-  padding: 40px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -385,8 +312,6 @@ textarea{
 
 .userBox input
 {
-  width: 100;
-  margin-bottom: 20px;
   color: #ffffff;
 }
 
@@ -445,6 +370,15 @@ textarea{
   text-decoration: none;
   text-align: center;
   display: block;
+}
+
+.titledrop{
+  color: white;
+  background-color: #2b2b2b;
+}
+.acctext{
+  margin-top: 1rem;
+  margin-bottom: 2px;
 }
 
 /* My Account styles end */

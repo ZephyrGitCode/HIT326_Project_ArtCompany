@@ -22,6 +22,9 @@ if(!empty($arts)){
         </a>
 <?php
       echo "<li>{$title}, {$artdesc}, {$price}, {$category}, {$size}</li>";
+      ?>
+      <a href="<?php echo "/"."art/"."{$artno}"?>" class="inspect"><p>Inspect</p></a>
+      <?php
 ?>
       </div>
 <?php
