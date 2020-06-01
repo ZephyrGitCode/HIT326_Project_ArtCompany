@@ -17,13 +17,17 @@ function get_db(){
 
 /* Other functions can go below here */
 
-function get_users(){
+function get_user($id){
    //$list = null;
    try{
       $db = get_db();
-      $query = "SELECT fname FROM users";
-      $statement = $db->prepare($query);
-      $statement -> execute();
+      $query = "SELECT *  FROM users where id=?";
+      if($statement = $db->prepare($query)){
+         $binding = array($id);
+         if(!$statement -> execute($binding)){
+             throw new Exception("Could not execute query.");
+         }
+      }
       $list = $statement->fetchall(PDO::FETCH_ASSOC);
       return $list;
    }

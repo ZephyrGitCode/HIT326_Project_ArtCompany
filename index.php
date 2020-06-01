@@ -62,7 +62,13 @@ get("/myaccount/:id;[\d]+",function($app){
    require MODEL;
    try{
       if(is_authenticated()){
-         $app->render(LAYOUT,"myaccount");
+         try{
+            $app->set_message("user", get_user($id));
+            $app->render(LAYOUT,"myaccount");
+         }catch(Exception $e){
+            // Failed to load DB
+         }
+         
        }   
     }
     catch(Exception $e){
@@ -282,5 +288,6 @@ delete("/user",function($app){
    $app->set_flash("User has been deleted");
    $app->redirect_to("/");
 });
+
 // Now. If it get this far then page not found
 resolve();

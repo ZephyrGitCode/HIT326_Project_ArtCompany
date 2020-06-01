@@ -150,10 +150,6 @@ class Application{
        $content = VIEWS."/{$content}.php";
 
        if(!empty($layout)){
-          if ($content == "home"){
-            //$users = get_users();
-            $arts = get_products();
-          }
           
           require VIEWS."/{$layout}.layout.php";
        }
@@ -257,9 +253,9 @@ class Application{
     public static function resolve(){
 	  if(!static::$route_found){
 		$application = static::get_instance();
-		//header("location: /signup");
+		header("location: /signup");
       //$application->render("standard","signin");
-      $application->render("standard","myaccount");
+      //$application->render("standard","myaccount");
 	  }
     }
 
