@@ -39,7 +39,6 @@ get("/",function($app){
    }catch(Exception $e){
       // Failed to load DB
    }
-   
    $app->render(LAYOUT,"home");
 });
 
@@ -74,7 +73,22 @@ get("/myaccount/:id;[\d]+",function($app){
         $app->set_message("message",$e->getMessage($app));
     }
    $app->set_message("note", "You must be logged in to see your account");
-   $app->render(LAYOUT,"/signin");
+   $app->render(LAYOUT,"signin");
+});
+
+get("/cart",function($app){
+   $app->set_message("title","Shopping Cart");
+   require MODEL;
+   try{
+     if(is_authenticated()){
+         $app->set_message("arts", get_products());
+         $app->render(LAYOUT,"cart");
+      }   
+   }
+   catch(Exception $e){
+       $app->set_message("message",$e->getMessage($app));
+   }
+   $app->render(LAYOUT,"/");
 });
 
 get("/signin",function($app){
@@ -169,6 +183,8 @@ get("/signout",function($app){
         $app->redirect_to("/signin");
    }   
 });
+
+// End get
 
 post("/signup",function($app){
     require MODEL;

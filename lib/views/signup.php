@@ -13,4 +13,5 @@
 			<input class='log-button' type='submit' value='Sign up' />
 		</form>
 	</div>
+	<p style="text-align: center;"><a href='/signin'>Already have an account?</a></p>
 </div>
