@@ -1,7 +1,4 @@
 <head>
-    <meta charset="utf-8">
-    <title>My Account</title>
-    <link href="stylesheet.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
@@ -9,16 +6,18 @@
     <div class="userBox">
         <h3 class="accounth3">My Account</h3>
         <label class="userPic" for="userImage">
-            <input type="file" name="userImage" id="userImage" style="display:none;">
-            <img class="userPic" src="https://i.imgur.com/cmDNHJ7.png" id="avatar" style="cursor:pointer"/>
+        <input type="file" name="userImage" id="userImage" style="display:none;">
+        <img class="userPic" src="https://i.imgur.com/cmDNHJ7.png" id="avatar" style="cursor:pointer"/>
         </label>
         <?php
         $user = $user[0];
         if(!empty($user)){
             //print_r($user);
         ?>
-        <form>
+        <form action='/myaccount/<?php if(!empty($user['id']))echo $user['id']?>' method='POST'>
+            <input type='hidden' name='_method' value='post' />
             <h4>User Details</h4>
+            
             <p class="acctext">Title:</p>
             <select name="title" class="titledrop">
                 <option value="Mr."> Mr.</option>
@@ -47,28 +46,34 @@
                 <span><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
 
-            <p class="acctext">phone:</p>
+            <p class="acctext">Phone:</p>
             <div class="inputBox">
                 <input type="text" id="phone" name="phone" value="<?php echo $user['phone']?>">
                 <span><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
 
             <h4>Shipping Details</h4>
-            <p class="acctext">City:</p>
+            <p class="acctext">Country:</p>
             <div class="inputBox">
-                <input type="text" id="city" name="city" value="<?php echo $user['city']?>">
+                <input type="text" id="country" name="country" value="<?php echo $user['country']?>">
                 <span><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
 
+            <p class="acctext">Address:</p>
+            <div class="inputBox">
+                <input type="text" id="address" name="address" value="<?php echo $user['city']?>">
+                <span><i class="fa fa-user" aria-hidden="true"></i></span>
+            </div>
+            
             <p class="acctext">Shipping State:</p>
             <div class="inputBox">
                 <input type="text" id="state" name="state" value="<?php echo $user['shipping_state']?>">
                 <span><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
 
-            <p class="acctext">Country:</p>
+            <p class="acctext">City:</p>
             <div class="inputBox">
-                <input type="text" id="country" name="country" value="<?php echo $user['country']?>">
+                <input type="text" id="city" name="city" value="<?php echo $user['city']?>">
                 <span><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
 
@@ -116,7 +121,6 @@
     <input name="uploaded" type="file" /><br />
     <input type="submit" value="Upload" />
 </form>
-
 -->
 
 <?php
