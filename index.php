@@ -290,7 +290,6 @@ put("/change/:id[\d]+",function($app){
    require MODEL;
    try{
       if(is_authenticated()){
-         $app->set_flash("Checked");
          $pw_old = $app->form('old-password');
          $pw_new = $app->form('password');
          $pw_confirm = $app->form('passw-c');
@@ -309,17 +308,22 @@ put("/change/:id[\d]+",function($app){
             $app->set_flash("You must enter all fields.");  
             $app->redirect_to("/change/".$id);
          }
-         $app->redirect_to("/");
       }
       else{
          $app->set_flash("You are not logged in.");  
-         $app->redirect_to("/");           
+         $app->redirect_to("/signin");           
       }
    }
    catch(Exception $e){
       $app->set_flash("{$e->getMessage()}");  
       $app->redirect_to("/");
    }
+});
+
+post("/cart", function($app){
+   $data = $app->form('title');
+   $app->set_flash("Helllo ".$data);
+
 });
 
 # The Delete call back is left for you to work out

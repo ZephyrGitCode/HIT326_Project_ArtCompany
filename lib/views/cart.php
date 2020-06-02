@@ -5,26 +5,32 @@
 <body class="accountBody">
     <div class="userBox">
         <h3 style="padding: 0 0 20px;">Shopping Cart</h3>
+        <?php     
+        /*
+        $to_email = 'zephyr.dobson@outlook.com';
+        $subject = 'Testing PHP Mail';
+        $message = 'This mail is sent using the PHP mail function';
+        $headers = 'From: zephyr.dobson@outlook.com';
+        mail($to_email,$subject,$message,$headers);
+        */
+        ?>
+        <form action='/cart' method='POST'>
+            <input type='hidden' name='_method' value='post' />
+            
+            <div class="artworks" id="artworks"></div>
 
-        <div class="artworks" id="artworks"></div>
+
+        </form>
+       
 
         <div class="checkout">
             <button id="checkoutbtn" onclick="checkout()">Checkout</button>
         </div>
     </div>
-
+    
 
 </body>
-<?php
-// the message
-$msg = "First line of text\nSecond line of text";
 
-// use wordwrap() if lines are longer than 70 characters
-$msg = wordwrap($msg,70);
-
-// send email
-mail("zephyr.dobson@outlook.com","My subject",$msg);
-?>
 <script>
     
     for(var i = 0; i < 11; i++) { //localStorage.length+1
@@ -72,7 +78,17 @@ mail("zephyr.dobson@outlook.com","My subject",$msg);
     function checkout(evt){
         var subject = "Purchase";
         var body = "All art here";
+        // Work in progress
         window.open('mailto:zephyr.dobson@outlook.com?subject='+subject+'&body='+body+'');
     }
+
+    var form = "data";
+    var serializedData = form.serialize()
+    console.log(serializedData);
+    request = $.ajax({
+        url: "/cart.php",
+        type: "post",
+        data: serializedData
+    });
 
 </script>

@@ -42,13 +42,12 @@ CREATE TABLE `art` (
 
 
 CREATE TABLE `purchaseitem` (
-  itemNo int(11) NOT NULL auto_increment,
-  PRIMARY KEY (itemNo),
   purchaseNo int(11) NOT NULL,
-  CONSTRAINT FOREIGN KEY (purchaseNo) REFERENCES purchase(purchaseNo),
   artNo int(11) NOT NULL,
-  CONSTRAINT FOREIGN KEY (artNo) REFERENCES art(artNo),
-  quantity int(3) NOT NULL
+  quantity int(3) NOT NULL,
+  PRIMARY KEY (purchaseNo, artNo),
+  FOREIGN KEY (purchaseNo) REFERENCES purchase(purchaseNo) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (artNo) REFERENCES art(artNo) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 # Artworks
