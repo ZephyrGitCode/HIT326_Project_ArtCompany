@@ -253,7 +253,7 @@ class Application{
     public static function resolve(){
 	  if(!static::$route_found){
 		$application = static::get_instance();
-		header("location: /signup");
+		header("location: /signin");
       //$application->render("standard","signin");
       //$application->render("standard","myaccount");
 	  }

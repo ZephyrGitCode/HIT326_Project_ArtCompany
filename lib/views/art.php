@@ -41,25 +41,55 @@ if(!empty($arts)){
 }
 
 ?>
+
+<div id="showcart" class="showcart">
+  <a href="javascript:void(0)" class="closecart" onclick="closecart()">×</a>
+  <br/>
+  <br/>
+  <h4>Artwork added to cart</h4>
+  <p id="artadd"></p>
+</div>
+
 <script>
   //localStorage.clear();
+  /*
+  for (var key in localStorage){
+   console.log(key)
+  }
+  */
   
   document.querySelector(".cart").addEventListener('click', addtocart);
 
   function addtocart(evt){
     var quant = document.getElementById("quantity").value;
-    artdata = {"artno":<?php echo $id ?>,"quantity":quant};
+    if ("art"+<?php echo $id ?> in localStorage){
+      var localdata = JSON.parse(localStorage.getItem("art"+<?php echo $id ?>));
+      var localquant = localdata["quantity"];
+      var totalquant = parseInt(localquant) + parseInt(quant);
+      artdata = {"artno":<?php echo $id ?>,"quantity":parseInt(totalquant)};
+      document.getElementById("artadd").innerHTML="Artwork: "+"<?php echo $title ?>"+". Quantity: "+totalquant;
+    }else{
+      artdata = {"artno":<?php echo $id ?>,"quantity":parseInt(quant)};
+      document.getElementById("artadd").innerHTML="Artwork: "+"<?php echo $title ?>"+". Quantity: "+quant;
+    }
     var saveinputs = JSON.stringify(artdata);
     var totalkeys = localStorage.length;
-    localStorage.setItem("art"+totalkeys, saveinputs);
-    //window.location.href = "/";
+    localStorage.setItem("art"+<?php echo $id ?>, saveinputs);
+    
+    document.getElementById("showcart").style.display = "block";
+  }
+  
+  function closecart() {
+    document.getElementById("showcart").style.display = "none";
   }
 
   /*
   for (let i = 0; i < localStorage.length; i++)        
-   let key = localStorage.key(i);
+   let key =  localStorage.key(i);
    console.log(localStorage.getItem(key));
   }
   */
+
+
 
 </script>

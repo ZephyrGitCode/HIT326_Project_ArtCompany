@@ -7,6 +7,7 @@ CREATE TABLE `users` (
   fname varchar(40) NOT NULL,
   lname varchar(40) NOT NULL,
   email varchar(60) NOT NULL,
+  UNIQUE (email),
   shipping_address varchar(120),
   city varchar(100),
   shipping_state char(3),

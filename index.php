@@ -54,7 +54,6 @@ get("/art/:id;[\d]+",function($app){
    $app->render(LAYOUT,"art");
 });
 
-
 get("/myaccount/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("title","Darwin Art Company");
@@ -127,35 +126,28 @@ get("/signup",function($app){
    $app->render(LAYOUT,"signup");
 });
 
-get("/change/:id[\d]+",function($app){
+get("/change/:id;[\d]+",function($app){
    $id = $app->route_var("id");
-   $app->force_to_http("/change");
-   $app->set_message("title","Change password");
+   $app->set_message("title","Darwin Art Company");
+   $app->set_message("message","Welcome".$id);
    require MODEL;
-   $name="";
    try{
       if(is_authenticated()){
-        try{
-           $name = get_user_name(); 
-           $app->set_message("name",$name);
-           $id = get_user_id();
-           $app->set_message("user_id",$id);           
-        }
-        catch(Exception $e){
-            $app->set_message("error","Error with retrieving name");
-        }
-      }
-      else{
-          $app->set_flash("You are not authorised to do this.");
-          $app->redirect_to("/");   
-      }
-   }
-   catch(Exception $e){
-       $app->set_message("error",$e->getMessage());       
-   }
-   $app->render(LAYOUT,"change_password");
+         try{
+            $app->set_message("user", get_user($id));
+            $app->render(LAYOUT,"change_pass");
+         }catch(Exception $e){
+            // Failed to load DB
+         }
+         
+       }   
+    }
+    catch(Exception $e){
+        $app->set_message("message",$e->getMessage($app));
+    }
+   $app->set_message("note", "You must be logged in to see your account");
+   $app->render(LAYOUT,"/signin");
 });
-
 
 get("/signout",function($app){
    // should this be GET or POST or PUT?????
@@ -177,7 +169,6 @@ get("/signout",function($app){
         $app->redirect_to("/signin");
    }   
 });
-
 
 post("/signup",function($app){
     require MODEL;
@@ -238,36 +229,69 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-put("/change/:id[\d]+",function($app){
-   // Not complete because can't handle complex routes like /change/23
-   //$app->set_flash("Password is changed");
-   //$app->redirect_to("/");
+post("/myaccount/:id[\d]+",function($app){
+   $app->set_message("title","Darwin Art Company Account");
+   require MODEL;
+   try{
+       if(is_authenticated()){
+         $id = get_user_id();
+         $title = $app->form('title');
+         $fname = $app->form('fname');
+         $lname = $app->form('lname');
+         $email = $app->form('email');
+         $phone = $app->form('phone');
+         $city = $app->form('city');
+         $state = $app->form('state');
+         $country = $app->form('country');
+         $postcode = $app->form('postcode');
+         $shipping_address = $app->form('address');
+  
+         try{
+            update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$country,$postcode,$shipping_address);
+            $app->set_flash("Details Successfully updated");
+            $app->redirect_to("/");   
+         }
+         catch(Exception $e){
+            $app->set_flash($e->getMessage());  
+            $app->redirect_to("/");          
+         }
+       }
+       else{
+          $app->set_flash("You are not authenticated, please login correctly");  
+          $app->redirect_to("/");           
+       }
+   }
+   catch(Exception $e){
+        $app->set_flash("{$e->getMessage()}");  
+        $app->redirect_to("/");
+   }
+});
 
+put("/change/:id[\d]+",function($app){
    $id = $app->route_var("id");
    $app->force_to_http("/change");
    $app->set_message("title","Change password");
    require MODEL;
    try{
-      if(!is_authenticated()){
+      if(is_authenticated()){
+         $app->set_flash("Checked");
          $pw_old = $app->form('old-password');
          $pw_new = $app->form('password');
          $pw_confirm = $app->form('passw-c');
-
          if($pw_old && $pw_new && $pw_confirm){
             try{
-               $return = change_password($id,$pw_old,$pw_new,$pw_confirm);
-               $app->set_flash($return);
-               $app->set_message("note","Password successfully changed."); 
+               change_password($id,$pw_old,$pw_new,$pw_confirm);
+               $app->set_flash("Password successfully changed.");
                $app->redirect_to("/");   
             }
             catch(Exception $e){
                $app->set_flash($e->getMessage());  
-               $app->redirect_to("/");          
+               $app->redirect_to("/change/".$id);         
             }
          }
          else{
-            $app->set_flash("Field entry failed, incorrect credentials.");  
-            //$app->redirect_to("/change/:id[\d]+");
+            $app->set_flash("You must enter all fields.");  
+            $app->redirect_to("/change/".$id);
          }
          $app->redirect_to("/");
       }
