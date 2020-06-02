@@ -371,3 +371,46 @@ function change_password($id, $old_pw, $new_pw, $pw_confirm){
         throw new Exception($e->getMessage());
     }
 }
+
+
+function order($id){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO purchase (id) VALUES (?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($id);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }else{
+            
+         }
+      }
+      else{
+         throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
+}
+
+function orderitems($purchaseno, $artno, $quantity){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO purchaseitem (purchaseNo,artNo,quantity) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($purchaseno, $artno, $quantity);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }else{
+            
+         }
+      }
+      else{
+         throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+      throw new Exception($e->getMessage());
+   }
+}

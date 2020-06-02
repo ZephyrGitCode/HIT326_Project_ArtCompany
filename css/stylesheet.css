@@ -234,6 +234,7 @@ textarea{
 
 .productimage{
   width: 50%;
+  margin-right:10px;
 }
 
 .price
@@ -407,6 +408,36 @@ textarea{
   outline: none;
   height: 40px;
   font-size: 16px;
+  background: #FE980F;
+  color: #2B2B2B;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* cart */
+
+#delbtn{
+  border: none;
+  outline: none;
+  height: 40px;
+  font-size: 16px;
+  background-color: #a469b3;
+  color: #ffffff;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.checkout{
+  position: absolute;
+  top: 16%;
+  right: 10%;
+}
+
+#checkoutbtn{
+  border: none;
+  outline: none;
+  height: 40px;
+  font-size: 18px;
   background: #FE980F;
   color: #2B2B2B;
   border-radius: 20px;

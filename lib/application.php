@@ -23,29 +23,29 @@ function resolve(){
 }
 
 class Application{
-    private static $instance;
-    private static $route_found = false;
-    private $route = "";
+   private static $instance;
+   private static $route_found = false;
+   private $route = "";
 
-    /* Added properties */
-    private $messages = array();
-    private $method = "";
-    private $route_segments = array();
-    private $route_variables = array();
+   /* Added properties */
+   private $messages = array();
+   private $method = "";
+   private $route_segments = array();
+   private $route_variables = array();
+   
+   public static function get_instance(){
+      if(!isset(static::$instance)){
+         static::$instance = new Application();
+      }
+      return static::$instance;
+   }
     
-    public static function get_instance(){
-        if(!isset(static::$instance)){
-            static::$instance = new Application();
-        }
-        return static::$instance;
-    }
     
-    
-    protected function __construct(){
+   protected function __construct(){
       $this->route = $this->get_route();
       $this->method = $this->get_method();
       $this->route_segments = explode("/",trim($this->route,"/"));
-  }
+   }
     
     public function accepts($accept="text/html"){
       $accept_header = "";
@@ -134,7 +134,7 @@ class Application{
       }     
    }
    
-    public function route_var($key){
+   public function route_var($key){
       return $this->route_variables[$key];
    }
 
@@ -254,8 +254,6 @@ class Application{
 	  if(!static::$route_found){
 		$application = static::get_instance();
 		header("location: /signin");
-      //$application->render("standard","signin");
-      //$application->render("standard","myaccount");
 	  }
     }
 
