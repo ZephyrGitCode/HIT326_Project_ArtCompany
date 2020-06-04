@@ -11,5 +11,5 @@ CREATE TABLE `testimonial` (
   approved VARCHAR(5) DEFAULT 'false'
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
-# testimonial insert
+# testimonial
 INSERT INTO `testimonial` (`id`, `artNo`, `test`) VALUES (1, 1, 'Great product');
