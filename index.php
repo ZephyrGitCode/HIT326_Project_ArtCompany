@@ -50,6 +50,7 @@ get("/art/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("arts", get_products());
    $app->set_message("id", $id);
+   $app->set_message("testimonials", get_testimonials($id));
    $app->render(LAYOUT,"art");
 });
 
@@ -244,6 +245,32 @@ post("/signin",function($app){
   $app->set_message("note","Lovely, you are now signed in!");
   $app->redirect_to("/");
 });
+
+
+post("/art/:id[\d]+",function($app){
+   require MODEL;
+   $artno = $app->route_var("id");
+   session_start();
+   $id = $_SESSION['userno'];
+   session_write_close();
+   $test = $app->form('test');
+   if($artno && $id && $test){
+     try{
+        add_testimonial($id,$artno,$test);
+        $app->redirect_to("/art/".$artno);
+     }
+     catch(Exception $e){
+       $app->set_flash("Failed to add testimonial. {$e->getMessage()}");
+       $app->redirect_to("/art/".$artno);      
+     }
+   }
+   else{
+        $app->set_flash("Please enter all fields.");
+        $app->redirect_to("/art/".$artno);
+   }
+   $app->set_flash("Failed");  
+   $app->redirect_to("/art/".$artno);        
+ });
 
 post("/myaccount/:id[\d]+",function($app){
    $app->set_message("title","Darwin Art Company Account");
