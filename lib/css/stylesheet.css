@@ -451,3 +451,14 @@ textarea{
   background-color:#59136b;
   border-radius: 20px;
 }
+
+.testimonials input[type="submit"] {
+  border: none;
+  outline: none;
+  height: 40px;
+  font-size: 16px;
+  background: #FE980F;
+  color: #2B2B2B;
+  border-radius: 20px;
+  cursor: pointer;
+}

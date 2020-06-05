@@ -3,6 +3,13 @@
 </head>
 
 <body class="accountBody">
+    <?php
+    echo $_POST['data'];
+    foreach ($_POST as $key => $value) {
+        echo "Field ".htmlspecialchars($key)." is ".htmlspecialchars($value)."<br>";
+    }
+    ?>
+    <p id="response"></p>
     <div class="userBox">
         <h3 style="padding: 0 0 20px;">Shopping Cart</h3>
         <?php     
@@ -24,13 +31,14 @@
        
 
         <div class="checkout">
-            <button id="checkoutbtn" onclick="checkout()">Checkout</button>
+            <button id="checkoutbtn" onclick="purchase()">Checkout</button>
         </div>
     </div>
     
 
 </body>
 
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script>
     
     for(var i = 0; i < 11; i++) { //localStorage.length+1
@@ -72,7 +80,7 @@
         var key = parseInt(evt.target.dataset.key);
         localStorage.removeItem("art"+key);
         // Reloads the window
-        window.location.href = "";
+        window.location.href = "/";
     }
 
     function checkout(evt){
@@ -82,13 +90,31 @@
         window.open('mailto:zephyr.dobson@outlook.com?subject='+subject+'&body='+body+'');
     }
 
-    var form = "data";
-    var serializedData = form.serialize()
-    console.log(serializedData);
-    request = $.ajax({
-        url: "/cart.php",
-        type: "post",
-        data: serializedData
-    });
+    function purchase(){
 
+        // once clicked do for item in storage, send it to server
+        // Server insert purchase(id), get purchaseNo then
+        // insert purchaseitem(purchaseNo,artNo,Quantity)
+        for(var i = 0; i < 11; i++) { //localStorage.length+1
+            //var data = localStorage.getItem("art"+i);
+            var data = JSON.parse(localStorage.getItem("art"+i));
+            if (data != null){ //&& "artno" in data
+                console.log(data);
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',  
+                    url: '/cart', 
+                    data: {
+                        artno:data['artno'],
+                        quantity:data['quantity']
+                        },
+                    success: function(response) {
+                        $("#response").html(response);
+                    }
+                });
+                localStorage.removeItem("art"+i);
+            }
+        }
+        window.location.href = "/";
+    }
 </script>

@@ -13,7 +13,7 @@
     <h2 class="form-h2 navforms">Browse</h2>
     <hr style="margin-bottom:0;"/>
     <div class="navforms forms">
-      <a href="/"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe3ad</span><span style="margin-bottom:5px;">All Art</span></p></a>
+      <a href="/"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe3ad</span><span style="margin-bottom:5px;">All Art</span></p></a>
     </div>
 
     <h2 class="form-h2 navforms">Manage</h2>
@@ -23,14 +23,14 @@
     <?php
       if (is_authenticated()){
     ?>
-      <a href="<?php if ($_SESSION['userno'] != ""){echo "/myaccount/{$_SESSION['userno']}";}else{echo "/myaccount/123";}?>"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe869</span>My Account</p></a>
-      <a href="<?php if ($_SESSION['userno'] != ""){echo "/change/{$_SESSION['userno']}";}else{echo "/change/123";}?>"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Change Password</p></a>
-      <a href="/signout"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signout</p></a>
+      <a href="<?php if ($_SESSION['userno'] != ""){echo "/myaccount/{$_SESSION['userno']}";}else{echo "/myaccount/123";}?>"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe869</span>My Account</p></a>
+      <a href="<?php if ($_SESSION['userno'] != ""){echo "/change/{$_SESSION['userno']}";}else{echo "/change/123";}?>"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe8a6</span>Change Password</p></a>
+      <a href="/signout"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe8a6</span>Signout</p></a>
     <?php
         }else{
     ?>
-      <a href="/signup"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signup</p></a>
-      <a href="/signin"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">&#xe8a6</span>Signin</p></a>
+      <a href="/signup"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe8a6</span>Signup</p></a>
+      <a href="/signin"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;vertical-align: bottom;">&#xe8a6</span>Signin</p></a>
     <?php
       }
     ?>

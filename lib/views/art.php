@@ -28,8 +28,7 @@ if(!empty($arts)){
 
           <label class="productlabel">Quantity:</label>
           <input class="productinput" id="quantity" type="number" value="1" min=0 oninput="validity.valid||(value='');">
-          <button type="button" class="btn btn-default cart">
-          Add to cart</button>
+          <button type="button" class="btn btn-default cart" >Add to cart</button>
         </div>
       </div>
 <?php
@@ -55,11 +54,9 @@ if(!empty($arts)){
     <input type='hidden' name='_method' value='post' />
     <h4>Testimonials</h4>
     <p class="acctext">Share a message about this artwork</p>
-    <div class="inputBox">
-        <textarea id="test" name="test" ></textarea>
-    </div>
+    <textarea id="test" name="test"></textarea>
 
-    <input type="submit" name="" value="Save">
+    <input type="submit" name="" value="Send Message">
   </form>
 
   <div class="test-list">
