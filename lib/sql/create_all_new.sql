@@ -50,6 +50,17 @@ CREATE TABLE `purchaseitem` (
   FOREIGN KEY (artNo) REFERENCES art(artNo) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `testimonial` (
+  testNo int(11) NOT NULL auto_increment,
+  PRIMARY KEY (testNo),
+  id int(11) NOT NULL,
+  CONSTRAINT FOREIGN KEY (id) REFERENCES users(id),
+  artNo int(11) NOT NULL,
+  CONSTRAINT FOREIGN KEY (artNo) REFERENCES art(artNo),
+  test varchar(255) NOT NULL,
+  approved VARCHAR(5) DEFAULT 'false'
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
+
 # Artworks
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'Sonic Meme', 'That one sonic meme', '12.50', 'Hand Drawn', '60x55 cm', 'https://i.imgur.com/WijgGCs.png');
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'Mona Lisa', 'Famous rendition', '70', 'Painted', '77x53 cm', 'https://i.imgur.com/eyKYGQG.jpg');

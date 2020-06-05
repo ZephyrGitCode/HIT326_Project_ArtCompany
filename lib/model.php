@@ -54,6 +54,28 @@ function get_products(){
       }
 }
 
+function get_testimonials($artno){
+   $testimonials = null;
+   //$testimonials = "Hello";
+   try{
+      $db = get_db();
+      $query = "SELECT * FROM testimonial WHERE artno=?";
+      if($statement = $db->prepare($query)){
+         $binding = array($artno);
+         if(!$statement -> execute($binding)){
+             throw new Exception("Could not execute query.");
+         }
+      }
+      $testimonials = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $testimonials;
+   }
+   catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+      }
+}
+
+
 function sign_up($fname, $lname, $email, $password, $password_confirm){
    try{
      $db = get_db();
@@ -194,6 +216,28 @@ function update_details($id,$title,$fname,$lname,$email,$phone,$city,$state,$cou
         throw new Exception("Invalid data.");
      }
      
+
+   }
+   catch(Exception $e){
+       throw new Exception($e->getMessage());
+   }
+
+}
+
+function add_testimonial($id,$artno,$test){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO testimonial (id,artNo,test) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($id,$artno,$test);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+
+      }
 
    }
    catch(Exception $e){

@@ -50,6 +50,41 @@ if(!empty($arts)){
   <p id="artadd"></p>
 </div>
 
+<div class="testimonials">
+  <form action="/art/<?php echo $id ?>" method='POST'>
+    <input type='hidden' name='_method' value='post' />
+    <h4>Testimonials</h4>
+    <p class="acctext">Share a message about this artwork</p>
+    <div class="inputBox">
+        <textarea id="test" name="test" ></textarea>
+    </div>
+
+    <input type="submit" name="" value="Save">
+  </form>
+
+  <div class="test-list">
+    <?php
+    if(!empty($testimonials)){
+      
+      foreach($testimonials As $test){
+        $userno = htmlspecialchars($test['id'],ENT_QUOTES, 'UTF-8');
+        $testtext = htmlspecialchars($test['test'],ENT_QUOTES, 'UTF-8');
+        $approved = htmlspecialchars($art['approved'],ENT_QUOTES, 'UTF-8');
+    ?>
+    <div class="test">
+      <p style="font-weight: 500; margin: .2rem 1rem;">User id: <?php echo $userno ?></p>
+      <p style="margin: .2rem 1rem";><?php echo $testtext ?></p>
+    </div>
+    <?php
+      }
+    }else{
+      echo "<h4>No previous testiments</h4>";
+    }
+    ?>
+
+    
+  </div>
+</div>
 <script>
 
   // Dev tool, remove all local storage
