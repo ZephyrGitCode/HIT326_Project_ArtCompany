@@ -83,23 +83,19 @@
         window.location.href = "/";
     }
 
-    function checkout(evt){
-        var subject = "Purchase";
-        var body = "All art here";
-        // Work in progress
-        window.open('mailto:zephyr.dobson@outlook.com?subject='+subject+'&body='+body+'');
-    }
-
     function purchase(){
 
+        //date_default_timezone_set("Australia/North");
+        //$OrderDate = date('Y/m/d H:m:s');
+        
         // once clicked do for item in storage, send it to server
         // Server insert purchase(id), get purchaseNo then
         // insert purchaseitem(purchaseNo,artNo,Quantity)
+        var array=[];
         for(var i = 0; i < 11; i++) { //localStorage.length+1
             //var data = localStorage.getItem("art"+i);
             var data = JSON.parse(localStorage.getItem("art"+i));
             if (data != null){ //&& "artno" in data
-                console.log(data);
                 $.ajax({
                     dataType: 'json',
                     type: 'POST',  
@@ -107,14 +103,15 @@
                     data: {
                         artno:data['artno'],
                         quantity:data['quantity']
-                        },
+                    },
                     success: function(response) {
                         $("#response").html(response);
                     }
                 });
                 localStorage.removeItem("art"+i);
             }
+            
         }
-        window.location.href = "/";
+        //window.location.href = "/";
     }
 </script>

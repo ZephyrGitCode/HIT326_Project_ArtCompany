@@ -348,23 +348,28 @@ put("/change/:id[\d]+",function($app){
 });
 
 post("/cart", function($app){
+   require MODEL;
    session_start();
    $id = $_SESSION['userno'];
    session_write_close();
-   $artno = $app->form('artno');
-   $quantity = $app->form('quantity');
-   require MODEL;
+   $data = $app->form('data');
+   echo "$data";
+   $app->set_flash("Data ", $data);
+   //$artno = $app->form('artno');
+   //$quantity = $app->form('quantity');
+   echo "$data";
+   exit();
    $purchaseno = "";
-   try{
-      $purchaseno = purchase($id);
-      purchaseitem($purchaseno, $artno, $quantity);
-      $app->set_flash("Purchase Successful!");
-      $app->redirect_to("/".$id);
-   }
-   catch(Exception $e){
-      $app->set_flash("Purchase Failed. ".$e->getMessage());  
-      $app->redirect_to("/cart".$id);        
-   }
+   //try{
+   //   $purchaseno = purchase($id);
+   //   purchaseitem($id, $purchaseno, $artno, $quantity);
+   //   $app->set_flash("Purchase Successful!");
+   //   $app->redirect_to("/");
+   //}
+   //catch(Exception $e){
+     // $app->set_flash("Purchase Failed. ".$e->getMessage());  
+     // $app->redirect_to("/cart".$id);        
+   //}
    
 });
 

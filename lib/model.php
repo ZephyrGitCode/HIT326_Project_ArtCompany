@@ -236,14 +236,11 @@ function add_testimonial($id,$artno,$test){
       }
       else{
       throw new Exception("Could not prepare statement.");
-
       }
-
    }
    catch(Exception $e){
        throw new Exception($e->getMessage());
    }
-
 }
 
 function purchase($id){
@@ -272,7 +269,7 @@ function purchase($id){
    }
 }
 
-function purchaseitem($purchaseno, $artno, $quantity){
+function purchaseitem($id, $purchaseno, $artno, $quantity){
    try{
       $db = get_db();
       $query = "INSERT INTO purchaseitem (purchaseNo, artNo, quantity) VALUES (?,?,?)";
@@ -280,6 +277,19 @@ function purchaseitem($purchaseno, $artno, $quantity){
          $binding = array($purchaseno, $artno, $quantity);
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
+         }else{
+            /*
+            // sql select name for email with id
+            // sql select artwork for email with artno
+            $msg =  "Dear $lname, \n\n
+            Included following is the details of your purchase: \n
+            $strOfProducts \n\n
+            Time of purchase: $OrderDate\n
+            Total: $$total \n\n
+            Thank you for your purchase!";
+            $sub = "Purchase details";
+            //mail($CustEmail, $sub, $msg);
+            */
          }
       }
       else{
