@@ -246,6 +246,51 @@ function add_testimonial($id,$artno,$test){
 
 }
 
+function purchase($id){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO purchase (id) VALUES (?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($id);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+         $query = "SELECT purchaseNo FROM purchase WHERE id=? ORDER BY purchaseNo DESC LIMIT 1";
+         $statement = $db->prepare($query);
+         $binding = array($id);
+         $statement -> execute($binding);
+
+         $result = $statement->fetch(PDO::FETCH_ASSOC);
+         return $result['purchaseNo'];
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+       throw new Exception($e->getMessage());
+   }
+}
+
+function purchaseitem($purchaseno, $artno, $quantity){
+   try{
+      $db = get_db();
+      $query = "INSERT INTO purchaseitem (purchaseNo, artNo, quantity) VALUES (?,?,?)";
+      if($statement = $db->prepare($query)){
+         $binding = array($purchaseno, $artno, $quantity);
+         if(!$statement -> execute($binding)){
+            throw new Exception("Could not execute query.");
+         }
+      }
+      else{
+      throw new Exception("Could not prepare statement.");
+      }
+   }
+   catch(Exception $e){
+       throw new Exception($e->getMessage());
+   }
+}
+
 function is_db_empty(){
    $is_empty = false;
    try{

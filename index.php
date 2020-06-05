@@ -348,9 +348,24 @@ put("/change/:id[\d]+",function($app){
 });
 
 post("/cart", function($app){
-   $data = $app->form('title');
-   $app->set_flash("Helllo ".$data);
-
+   session_start();
+   $id = $_SESSION['userno'];
+   session_write_close();
+   $artno = $app->form('artno');
+   $quantity = $app->form('quantity');
+   require MODEL;
+   $purchaseno = "";
+   try{
+      $purchaseno = purchase($id);
+      purchaseitem($purchaseno, $artno, $quantity);
+      $app->set_flash("Purchase Successful!");
+      $app->redirect_to("/".$id);
+   }
+   catch(Exception $e){
+      $app->set_flash("Purchase Failed. ".$e->getMessage());  
+      $app->redirect_to("/cart".$id);        
+   }
+   
 });
 
 # The Delete call back is left for you to work out
