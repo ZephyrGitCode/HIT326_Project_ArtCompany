@@ -3,12 +3,6 @@
 </head>
 
 <body class="accountBody">
-    <?php
-    echo $_POST['data'];
-    foreach ($_POST as $key => $value) {
-        echo "Field ".htmlspecialchars($key)." is ".htmlspecialchars($value)."<br>";
-    }
-    ?>
     <p id="response"></p>
     <div class="userBox">
         <h3 style="padding: 0 0 20px;">Shopping Cart</h3>
@@ -84,16 +78,20 @@
     }
 
     function purchase(){
-
-        //date_default_timezone_set("Australia/North");
-        //$OrderDate = date('Y/m/d H:m:s');
-        
+        date="";
+        date = "<?php echo $date ?>";
         // once clicked do for item in storage, send it to server
         // Server insert purchase(id), get purchaseNo then
         // insert purchaseitem(purchaseNo,artNo,Quantity)
-        var array=[];
         for(var i = 0; i < 11; i++) { //localStorage.length+1
             //var data = localStorage.getItem("art"+i);
+            senddata(i, date);
+        }
+        //window.location.href = "/";
+    }
+
+    function senddata(i, date){
+        setTimeout(function() {
             var data = JSON.parse(localStorage.getItem("art"+i));
             if (data != null){ //&& "artno" in data
                 $.ajax({
@@ -102,7 +100,8 @@
                     url: '/cart', 
                     data: {
                         artno:data['artno'],
-                        quantity:data['quantity']
+                        quantity:data['quantity'],
+                        date:date
                     },
                     success: function(response) {
                         $("#response").html(response);
@@ -110,8 +109,6 @@
                 });
                 localStorage.removeItem("art"+i);
             }
-            
-        }
-        //window.location.href = "/";
+        }, 2000*i);
     }
 </script>

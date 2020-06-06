@@ -243,33 +243,44 @@ function add_testimonial($id,$artno,$test){
    }
 }
 
-function purchase($id){
+function purchase($id, $pdate){
    try{
       $db = get_db();
-      $query = "INSERT INTO purchase (id) VALUES (?)";
-      if($statement = $db->prepare($query)){
-         $binding = array($id);
-         if(!$statement -> execute($binding)){
-            throw new Exception("Could not execute query.");
-         }
-         $query = "SELECT purchaseNo FROM purchase WHERE id=? ORDER BY purchaseNo DESC LIMIT 1";
-         $statement = $db->prepare($query);
-         $binding = array($id);
-         $statement -> execute($binding);
 
-         $result = $statement->fetch(PDO::FETCH_ASSOC);
-         return $result['purchaseNo'];
+      $query = "SELECT purchaseNo FROM purchase WHERE pdate=? ORDER BY purchaseNo DESC LIMIT 1";
+      $statement = $db->prepare($query);
+      $binding = array($pdate);
+      $statement -> execute($binding);
+
+      $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+      if ( $result['purchaseNo'] == ""){
+         $query = "INSERT INTO purchase (id,pdate) VALUES (?,?)";
+         if($statement = $db->prepare($query)){
+            $binding = array($id,$pdate);
+            if(!$statement -> execute($binding)){
+               throw new Exception("Could not execute query.");
+            }
+         }
+         else{
+         throw new Exception("Could not prepare statement.");
+         }
       }
-      else{
-      throw new Exception("Could not prepare statement.");
-      }
+      $query = "SELECT purchaseNo FROM purchase WHERE pdate=? ORDER BY purchaseNo DESC LIMIT 1";
+      $statement = $db->prepare($query);
+      $binding = array($pdate);
+      $statement -> execute($binding);
+
+      $result = $statement->fetch(PDO::FETCH_ASSOC);
+      return $result['purchaseNo'];
+      
    }
    catch(Exception $e){
        throw new Exception($e->getMessage());
    }
 }
 
-function purchaseitem($id, $purchaseno, $artno, $quantity){
+function purchaseitem($id, $purchaseno, $artno, $quantity, $pdate){
    try{
       $db = get_db();
       $query = "INSERT INTO purchaseitem (purchaseNo, artNo, quantity) VALUES (?,?,?)";
@@ -278,18 +289,30 @@ function purchaseitem($id, $purchaseno, $artno, $quantity){
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
          }else{
-            /*
+            
             // sql select name for email with id
+            $query = "SELECT fname, lname from users WHERE id=?";
+            $binding = array($id);
+            $statement -> execute($binding);
+            $userres = $statement->fetch(PDO::FETCH_ASSOC);
+            $fname = $userres['fname'];
+            $lname = $userres['lname'];
             // sql select artwork for email with artno
-            $msg =  "Dear $lname, \n\n
-            Included following is the details of your purchase: \n
+            $query = "SELECT * from art WHERE id=?";
+            $binding = array($artno);
+            $statement -> execute($binding);
+            $artres = $statement->fetch(PDO::FETCH_ASSOC);
+            $fname = $userres['fname'];
+            $lname = $userres['lname'];
+            $msg =  "Dear $fname $lname, \n\n
+            Included are the the details of your purchase: \n
             $strOfProducts \n\n
             Time of purchase: $OrderDate\n
             Total: $$total \n\n
             Thank you for your purchase!";
             $sub = "Purchase details";
             //mail($CustEmail, $sub, $msg);
-            */
+            
          }
       }
       else{

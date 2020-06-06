@@ -83,13 +83,19 @@ get("/cart",function($app){
    try{
      if(is_authenticated()){
          $app->set_message("arts", get_products());
+         $date = "";
+         date_default_timezone_set("Australia/North");
+         $date = date('Y/m/d H:m:s');
+         $app->set_message("date", $date);
          $app->render(LAYOUT,"cart");
       }   
    }
    catch(Exception $e){
-       $app->set_message("message",$e->getMessage($app));
+      $app->set_flash("You must be signed in to see your cart.");
+      $app->redirect_to("/"); 
    }
-   $app->render(LAYOUT,"/");
+   $app->set_flash("You must be signed in to see your cart.");
+   $app->redirect_to("/"); 
 });
 
 get("/signin",function($app){
@@ -352,24 +358,21 @@ post("/cart", function($app){
    session_start();
    $id = $_SESSION['userno'];
    session_write_close();
-   $data = $app->form('data');
-   echo "$data";
-   $app->set_flash("Data ", $data);
-   //$artno = $app->form('artno');
-   //$quantity = $app->form('quantity');
-   echo "$data";
-   exit();
+   $artno = $app->form('artno');
+   $quantity = $app->form('quantity');
+   $pdate = $app->form('date');
    $purchaseno = "";
-   //try{
-   //   $purchaseno = purchase($id);
-   //   purchaseitem($id, $purchaseno, $artno, $quantity);
-   //   $app->set_flash("Purchase Successful!");
-   //   $app->redirect_to("/");
-   //}
-   //catch(Exception $e){
-     // $app->set_flash("Purchase Failed. ".$e->getMessage());  
-     // $app->redirect_to("/cart".$id);        
-   //}
+   try{
+      $purchaseno = purchase($id, $pdate);
+      //$app->set_flash("Number ".$purchaseno);
+      //exit();
+      purchaseitem($id, $purchaseno, $artno, $quantity, $pdate);
+      $app->set_flash("Purchase Successful!");
+   }
+   catch(Exception $e){
+      $app->set_flash("Purchase Failed. ".$e->getMessage());  
+      $app->redirect_to("/cart".$id);        
+   }
    
 });
 
