@@ -448,7 +448,7 @@ textarea{
 /* testimonials */
 
 .test{
-  background-color:#59136b;
+  
   border-radius: 20px;
 }
 
@@ -461,4 +461,13 @@ textarea{
   color: #2B2B2B;
   border-radius: 20px;
   cursor: pointer;
+}
+
+#processing{
+  display: none;
+  padding: 10px;
+  position: absolute;
+  top: 12%;
+  right: 30%;
+  background-color: #59136b;
 }
