@@ -132,9 +132,9 @@ get("/cart",function($app){
      if(is_authenticated()){
          $app->set_message("arts", get_products());
          $date = "";
-         date_default_timezone_set("Australia/North");
-         $date = date('Y/m/d H:m:s');
-         $app->set_message("date", $date);
+         date_default_timezone_set("Australia/Darwin");
+         $datetime = date('Y/m/d H:i:s');
+         $app->set_message("datetime", $datetime);
          $app->render(LAYOUT,"cart");
       }   
    }
@@ -251,7 +251,6 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-
 post("/art/:id[\d]+",function($app){
    require MODEL;
    $artno = $app->route_var("id");
@@ -277,7 +276,34 @@ post("/art/:id[\d]+",function($app){
    $app->redirect_to("/art/".$artno);        
  });
 
-post("/myaccount/:id[\d]+",function($app){
+ 
+post("/cart", function($app){
+   require MODEL;
+   session_start();
+   $id = $_SESSION['userno'];
+   session_write_close();
+   $artno = $app->form('artno');
+   $quantity = $app->form('quantity');
+   $pdate = $app->form('date');
+   $total = $app->form('total');
+   $purchaseno = "";
+   try{
+      $purchaseno = purchase($id, $pdate);
+   }catch(Exception $e){
+      $app->set_flash("Purchase Failed. ".$e->getMessage());  
+      $app->redirect_to("/cart".$id);        
+   }
+   try{
+      purchaseitem($id, $purchaseno, $artno, $quantity, $pdate, $total);
+      $app->set_flash("Purchase Successful!");
+   }catch(Exception $e){
+      $app->set_flash("Purchase Failed. ".$e->getMessage());  
+      $app->redirect_to("/cart".$id);        
+   }
+   
+});
+
+put("/myaccount/:id[\d]+",function($app){
    $app->set_message("title","Darwin Art Company Account");
    require MODEL;
    try{
@@ -350,29 +376,6 @@ put("/change/:id[\d]+",function($app){
       $app->set_flash("{$e->getMessage()}");  
       $app->redirect_to("/");
    }
-});
-
-post("/cart", function($app){
-   require MODEL;
-   session_start();
-   $id = $_SESSION['userno'];
-   session_write_close();
-   $artno = $app->form('artno');
-   $quantity = $app->form('quantity');
-   $pdate = $app->form('date');
-   $purchaseno = "";
-   try{
-      $purchaseno = purchase($id, $pdate);
-      //$app->set_flash("Number ".$purchaseno);
-      //exit();
-      purchaseitem($id, $purchaseno, $artno, $quantity, $pdate);
-      $app->set_flash("Purchase Successful!");
-   }
-   catch(Exception $e){
-      $app->set_flash("Purchase Failed. ".$e->getMessage());  
-      $app->redirect_to("/cart".$id);        
-   }
-   
 });
 
 # The Delete call back is left for you to work out

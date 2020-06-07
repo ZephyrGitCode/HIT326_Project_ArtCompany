@@ -1,5 +1,8 @@
 <section class="products">
 <?php
+session_start();
+$usertype = $_SESSION['usertype'];
+session_write_close();
 
 if(!empty($arts)){
     echo "<h2>Artworks</h2>";
@@ -77,6 +80,16 @@ if(!empty($arts)){
     <div class="test">
       <p style="font-weight: 500; margin: .2rem 1rem;">User id: <?php echo $userno ?></p>
       <p style="margin: .2rem 1rem";><?php echo $testtext ?></p>
+      <?php
+      if ($usertype == 'admin'){
+        echo "admin";
+        ?>
+        <button action="/art/<?php echo $id ?>" mehtod="put">Approve</button>
+        <?php
+      }else{
+        echo "user";
+      }
+      ?>
     </div>
     <?php
       }

@@ -11,11 +11,11 @@
         </label>
         <?php
         $user = $user[0];
+        // if user is not empty
         if(!empty($user)){
-            //print_r($user);
         ?>
         <form action='/myaccount/<?php if(!empty($user['id']))echo $user['id']?>' method='POST'>
-            <input type='hidden' name='_method' value='post' />
+            <input type='hidden' name='_method' value='put' />
             <h4>User Details</h4>
             
             <p class="acctext">Title:</p>
@@ -83,24 +83,6 @@
                 <span><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
 
-
-            <!--
-            <div class="inputBox">
-                <input type="password" id="userPassCurrent" name="" placeholder="Current password">
-                <span><i class="fa fa-lock" aria-hidden="true"></i></span>
-            </div>
-            <div class="inputBox">
-                <input type="password" id="userPassNew" name="" placeholder="New password">
-                <span><i class="fa fa-lock" aria-hidden="true"></i></span>
-            </div>
-            <div class="inputBox">
-                <input type="password" name="" id="userPassNewConfirm" placeholder="Confirm new password">
-                <span><i class="fa fa-lock" aria-hidden="true"></i></span>
-            </div>
-            -->
-
-            
-
             <input type="submit" name="" value="Save">
         </form>
         <?php
@@ -111,32 +93,3 @@
 
     </div>
 </body>
-
-
-
-<!-- Update user image in database through file upload?
-
-<form 
-    enctype="multipart/form-data" action="upload.php" method="POST">
-    <input name="uploaded" type="file" /><br />
-    <input type="submit" value="Upload" />
-</form>
--->
-
-<?php
-
-/*
-
-    $target = "upload/";
-    $target = $target . basename( $_FILES['uploaded']['name']) ;
-    $ok=1;
-    if(move_uploaded_file($_FILES['uploaded']['tmp_name'], $target)){
-    echo "The file ". basename( $_FILES['uploadedfile']['name']). " has been uploaded";
-    }
-    else{
-    echo "Sorry, there was a problem uploading your file.";
-}
-
-*/
-
-?>

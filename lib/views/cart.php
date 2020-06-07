@@ -6,13 +6,8 @@
     <p id="response"></p>
     <div class="userBox">
         <h3 style="padding: 0 0 20px;">Shopping Cart</h3>
-        <form action='/cart' method='POST'>
-            <input type='hidden' name='_method' value='post' />
-            
-            <div class="artworks" id="artworks"></div>
-
-
-        </form>
+        
+        <div class="artworks" id="artworks"></div>
        
 
         <div class="checkout">
@@ -23,17 +18,16 @@
     <div class="processing" id="processing">
         <br/>
         <p>Processing Purchase</p>
+        <p>if you are not redirected in 10 seconds, press here <a href="/">HOME</a></p>
     </div>
 </body>
 
 <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script>
-    
-    for(var i = 0; i < 11; i++) { //localStorage.length+1
+    // Loops through each artwork and displays them on screen
+    for(var i = 0; i < 11; i++) {
         var data = JSON.parse(localStorage.getItem("art"+i));
         if (data != null && "artno" in data){
-            console.log("Artno "+data['artno']);
-            console.log("Quantity "+data['quantity']);
 
             var newart = document.createElement('div');
             newart.setAttribute("style","margin-bottom: 20px;")
@@ -73,40 +67,43 @@
 
     function purchase(){
         date="";
-        date = "<?php echo $date ?>";
+        date = "<?php echo $datetime ?>";
+        
+        // Displays processing text
         document.getElementById("processing").style.display = "block";
-        // once clicked do for item in storage, send it to server
-        // Server insert purchase(id), get purchaseNo then
-        // insert purchaseitem(purchaseNo,artNo,Quantity)
-        for(var i = 0; i < 11; i++) { //localStorage.length+1
-            //var data = localStorage.getItem("art"+i);
+        // For each artwork possble (max 10)
+        for(var i = 0; i < 11; i++) {
+            // Convert data to javascript object
             var data = JSON.parse(localStorage.getItem("art"+i));
-            if (data != null){ //&& "artno" in data
+            // Checks if data is correct
+            if (data != null && "artno" in data){
+                // Calls send data function
                 senddata(i, data, date);
             }
         }
+        setTimeout(function(){window.location.href ="/";},1000*i);
     }
 
     function senddata(i, data, date){
+        //total = data['quantity'] * data['price'];
+        // Timeout function to allow for delayed calls to server
         setTimeout(function() {
             $.ajax({
                 dataType: 'json',
                 type: 'POST',  
-                url: '/cart', 
+                url: '/cart',
+                // Sending data to be processed
                 data: {
                     artno:data['artno'],
                     quantity:data['quantity'],
-                    date:date
+                    date:date,
+                    total:(data['quantity']*data['price'])
                 },
                 success: function(response) {
                     $("#response").html(response);
                 }
             });
             localStorage.removeItem("art"+i);
-            if (i = 10){
-                //window.location.href = "/";
-            }
         }, 1000*i);
-        
     }
 </script>

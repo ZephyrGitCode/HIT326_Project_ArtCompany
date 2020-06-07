@@ -15,10 +15,8 @@ function get_db(){
 
 }
 
-/* Other functions can go below here */
-
 function get_user($id){
-   //$list = null;
+   $list = null;
    try{
       $db = get_db();
       $query = "SELECT * FROM users where id=?";
@@ -38,11 +36,10 @@ function get_user($id){
 }
 
 function get_products(){
-   //$arts = null;
+   $arts = null;
    try{
       $db = get_db();
       $query = "SELECT artNo, title, artdesc, price, category, size, link FROM art";
-      //add author
       $statement = $db->prepare($query);
       $statement -> execute();
       $arts = $statement->fetchall(PDO::FETCH_ASSOC);
@@ -56,7 +53,6 @@ function get_products(){
 
 function get_testimonials($artno){
    $testimonials = null;
-   //$testimonials = "Hello";
    try{
       $db = get_db();
       $query = "SELECT * FROM testimonial WHERE artno=?";
@@ -157,7 +153,7 @@ function get_user_name(){
 function sign_in($useremail,$password){
    try{
       $db = get_db();  
-      $query = "SELECT id, email, salt, hashed_password FROM users WHERE email=?";
+      $query = "SELECT id, email, salt, usertype, hashed_password FROM users WHERE email=?";
       if($statement = $db->prepare($query)){
          $binding = array($useremail);
          if(!$statement -> execute($binding)){
@@ -170,6 +166,7 @@ function sign_in($useremail,$password){
             $_SESSION['result'] = $result;
             $_SESSION['salt'] = $salt;
             $_SESSION['hash'] = $result['hashed_password'];
+            $usertype = $result['usertype'];
             session_write_close();
             $hashed_password = $result['hashed_password'];
             
@@ -179,7 +176,7 @@ function sign_in($useremail,$password){
             else{
                $email = $result["email"];
                $userno = $result["id"];
-               set_authenticated_session($email,$hashed_password, $userno);
+               set_authenticated_session($email,$hashed_password, $userno, $usertype);
             }
          }
       }
@@ -247,9 +244,9 @@ function purchase($id, $pdate){
    try{
       $db = get_db();
 
-      $query = "SELECT purchaseNo FROM purchase WHERE pdate=? ORDER BY purchaseNo DESC LIMIT 1";
+      $query = "SELECT purchaseNo FROM purchase WHERE pdate=? AND id=? ORDER BY purchaseNo DESC LIMIT 1";
       $statement = $db->prepare($query);
-      $binding = array($pdate);
+      $binding = array($pdate,$id);
       $statement -> execute($binding);
 
       $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -266,9 +263,9 @@ function purchase($id, $pdate){
          throw new Exception("Could not prepare statement.");
          }
       }
-      $query = "SELECT purchaseNo FROM purchase WHERE pdate=? ORDER BY purchaseNo DESC LIMIT 1";
+      $query = "SELECT purchaseNo FROM purchase WHERE pdate=? AND id=? ORDER BY purchaseNo DESC LIMIT 1";
       $statement = $db->prepare($query);
-      $binding = array($pdate);
+      $binding = array($pdate,$id);
       $statement -> execute($binding);
 
       $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -280,7 +277,7 @@ function purchase($id, $pdate){
    }
 }
 
-function purchaseitem($id, $purchaseno, $artno, $quantity, $pdate){
+function purchaseitem($id, $purchaseno, $artno, $quantity, $pdate, $total){
    try{
       $db = get_db();
       $query = "INSERT INTO purchaseitem (purchaseNo, artNo, quantity) VALUES (?,?,?)";
@@ -289,29 +286,33 @@ function purchaseitem($id, $purchaseno, $artno, $quantity, $pdate){
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
          }else{
+            try{
+               //Select user data
+               $query = "SELECT fname, lname, email from users WHERE id=?";
+               $statement = $db->prepare($query);
+               $binding = array($id);
+               $statement -> execute($binding);
+               $userres = $statement->fetch(PDO::FETCH_ASSOC);
+               $fname = $userres['fname'];
+               $email = $userres['email'];
+               $lname = $userres['lname'];
+               
+               // select art data
+               $query = "SELECT * from art WHERE artNo=?";
+               $statement = $db->prepare($query);
+               $binding = array($artno);
+               $statement -> execute($binding);
+               $artres = $statement->fetch(PDO::FETCH_ASSOC);
+               $arttitle = $artres['title'];
+
+               // Email purchase to customer
+               $sub = "Purchase details from Darwin Art Company";
+               $msg =  "Dear $fname $lname,\n   Included are the the details of your purchase for artwork:\n   $arttitle\n  Time of purchase: $pdate\n  Total: $$total\n\nThank you for your purchase!";
+               mail($email, $sub, $msg);
+            }catch(Exception $e){
+               throw new Exception("Could Send email.");
+            }
             
-            // sql select name for email with id
-            $query = "SELECT fname, lname from users WHERE id=?";
-            $binding = array($id);
-            $statement -> execute($binding);
-            $userres = $statement->fetch(PDO::FETCH_ASSOC);
-            $fname = $userres['fname'];
-            $lname = $userres['lname'];
-            // sql select artwork for email with artno
-            $query = "SELECT * from art WHERE id=?";
-            $binding = array($artno);
-            $statement -> execute($binding);
-            $artres = $statement->fetch(PDO::FETCH_ASSOC);
-            $fname = $userres['fname'];
-            $lname = $userres['lname'];
-            $msg =  "Dear $fname $lname, \n\n
-            Included are the the details of your purchase: \n
-            $strOfProducts \n\n
-            Time of purchase: $OrderDate\n
-            Total: $$total \n\n
-            Thank you for your purchase!";
-            $sub = "Purchase details";
-            //mail($CustEmail, $sub, $msg);
             
          }
       }
@@ -354,13 +355,14 @@ function is_db_empty(){
 	
 }
 
-function set_authenticated_session($email,$password_hash, $userno){
+function set_authenticated_session($email,$password_hash, $userno, $usertype){
       session_start();  
       
       //Make it a bit harder to session hijack
       session_regenerate_id(true);
       $_SESSION["userno"] = $userno;
       $_SESSION["email"] = $email;
+      $_SESSION["usertype"] = $usertype;
       $_SESSION["hash"] = $password_hash;
       session_write_close();
 }

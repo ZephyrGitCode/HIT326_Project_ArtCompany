@@ -1,7 +1,8 @@
 <p><?php echo $message ?></p>
 
 <?php
-//$arts = get_message();
+// email test
+//mail("zephyr.dobson@outlook.com", "hello", "Hello");
 if(!empty($arts)){
   echo "<h2>Artworks</h2>";
   

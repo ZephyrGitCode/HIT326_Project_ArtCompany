@@ -19,7 +19,6 @@
     <?php
     require PARTIALS."/header.html.php";
     ?>
-
     
     <div class="bodycontent">
       <div id='content'>
@@ -37,15 +36,9 @@
         ?>
       </div> <!-- end content -->
     </div> <!-- end main -->
-    <script>
-      function openNav() {
-        document.getElementById("mySidenav").style.width = "70%";
-      }
 
-      function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
-        document.body.style.backgroundColor = "rgb(18,18,18)";
-      }
-    </script>
+    <?php
+    require PARTIALS."/navscript.html.php";
+    ?>
   </body>
 </html>
