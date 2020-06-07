@@ -14,6 +14,7 @@ CREATE TABLE `users` (
   country varchar(120),
   postcode varchar(4),
   phone varchar(12),
+  usertype varchar(5) DEFAULT 'user',
   # Assuming SHA256 hash
   hashed_password char(64) NOT NULL,
   # Assuming 16 chars in salt
@@ -24,7 +25,7 @@ CREATE TABLE `purchase` (
   purchaseNo int(11) NOT NULL auto_increment,
   PRIMARY KEY (purchaseNo),
   id int(11) NOT NULL,
-  CONSTRAINT FOREIGN KEY (id) REFERENCES users(id),
+  CONSTRAINT FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
   pdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -54,9 +55,9 @@ CREATE TABLE `testimonial` (
   testNo int(11) NOT NULL auto_increment,
   PRIMARY KEY (testNo),
   id int(11) NOT NULL,
-  CONSTRAINT FOREIGN KEY (id) REFERENCES users(id),
+  CONSTRAINT FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
   artNo int(11) NOT NULL,
-  CONSTRAINT FOREIGN KEY (artNo) REFERENCES art(artNo),
+  CONSTRAINT FOREIGN KEY (artNo) REFERENCES art(artNo) ON DELETE CASCADE ON UPDATE CASCADE,
   test varchar(255) NOT NULL,
   approved VARCHAR(5) DEFAULT 'false'
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
