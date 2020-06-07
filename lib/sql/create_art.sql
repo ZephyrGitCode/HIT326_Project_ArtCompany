@@ -12,7 +12,7 @@ CREATE TABLE `art` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
-# Artworks
+# Artwork data
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'Sonic Meme', 'That one sonic meme', '12.50', 'Hand Drawn', '60x55 cm', 'https://i.imgur.com/WijgGCs.png');
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'Mona Lisa', 'Famous rendition', '70', 'Painted', '77x53 cm', 'https://i.imgur.com/eyKYGQG.jpg');
 INSERT INTO `art` (`artNo`, `title`, `artdesc`, `price`, `category`, `size`, `link`) VALUES (NULL, 'Doge', 'Such painting. Much art.', '20', 'Painted', '60x60 cm', 'https://i.imgur.com/rfYJHXS.jpg');

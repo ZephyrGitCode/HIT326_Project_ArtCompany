@@ -1,8 +1,4 @@
 <section class="products">
-<!--- Product details container --->
-
-<body>
-<!--- PHP for dynamic pages --->
 <?php
 
 if(!empty($arts)){
@@ -28,8 +24,18 @@ if(!empty($arts)){
 
           <label class="productlabel">Quantity:</label>
           <input class="productinput" id="quantity" type="number" value="1" min=0 oninput="validity.valid||(value='');">
+          <?php 
+          if (is_authenticated()){
+          ?>
           <button type="button" class="btn btn-default cart" >Add to cart</button>
-        </div>
+          <?php
+          }else{
+          ?>
+          <button type="button" class="btn btn-default cart" disabled>Please sign in to add to cart</button>
+          <?php
+          }
+          ?>
+          </div>
       </div>
 <?php
       }
