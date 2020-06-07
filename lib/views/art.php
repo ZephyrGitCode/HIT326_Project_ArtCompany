@@ -1,9 +1,8 @@
 <section class="products">
-<!--- Product details container --->
-
-<body>
-<!--- PHP for dynamic pages --->
 <?php
+session_start();
+$usertype = $_SESSION['usertype'];
+session_write_close();
 
 if(!empty($arts)){
     echo "<h2>Artworks</h2>";
@@ -28,8 +27,18 @@ if(!empty($arts)){
 
           <label class="productlabel">Quantity:</label>
           <input class="productinput" id="quantity" type="number" value="1" min=0 oninput="validity.valid||(value='');">
+          <?php 
+          if (is_authenticated()){
+          ?>
           <button type="button" class="btn btn-default cart" >Add to cart</button>
-        </div>
+          <?php
+          }else{
+          ?>
+          <button type="button" class="btn btn-default cart" disabled>Please sign in to add to cart</button>
+          <?php
+          }
+          ?>
+          </div>
       </div>
 <?php
       }
@@ -71,6 +80,16 @@ if(!empty($arts)){
     <div class="test">
       <p style="font-weight: 500; margin: .2rem 1rem;">User id: <?php echo $userno ?></p>
       <p style="margin: .2rem 1rem";><?php echo $testtext ?></p>
+      <?php
+      if ($usertype == 'admin'){
+        echo "admin";
+        ?>
+        <button action="/art/<?php echo $id ?>" mehtod="put">Approve</button>
+        <?php
+      }else{
+        echo "user";
+      }
+      ?>
     </div>
     <?php
       }

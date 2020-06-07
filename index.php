@@ -23,9 +23,6 @@ DEFINE("LAYOUT","standard");
 # This inserts our application code which handles the requests and other things
 require APP;
 
-
-
-
 /* Here is our Controller code i.e. API if you like.  */
 /* The following are just examples of how you might set up a basic app with authentication */
 
@@ -42,16 +39,54 @@ get("/",function($app){
    $app->render(LAYOUT,"home");
 });
 
-get("/art/:id;[\d]+",function($app){
-   //$app->force_to_http("/art/1");
-   $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Welcome");
+
+get("/signup",function($app){
+   $app->force_to_http("/signup");  
    require MODEL;
-   $id = $app->route_var("id");
-   $app->set_message("arts", get_products());
-   $app->set_message("id", $id);
-   $app->set_message("testimonials", get_testimonials($id));
-   $app->render(LAYOUT,"art");
+   $is_authenticated=false;
+   
+   try{
+      $is_authenticated = is_authenticated();
+   }
+   catch(Exception $e){
+      $app->set_flash("We have a problem with DB. The gerbils are working on it."); 
+      $app->redirect_to("/"); 
+   }   
+   
+   if($is_authenticated){
+       $app->set_message("message","You are already signed in.");
+       $app->set_flash("message","You are already signed in."); 
+       $app->force_to_http("/");
+       header("location: /");
+   }
+   else if(!$is_authenticated ){
+      //$app->set_message("error","You are the SUPER USER. This account cannot be deleted. You are the boss. The only way to clear the SUPER USER from the database is to DROP the entire table. Please sign in after you have finished signing up.");  
+   }
+   else{
+      $app->set_flash("You are not authorised to access this resource yet. I'm gonna tell your mum if you don't sign in."); 
+      $app->redirect_to("/signin");        
+   }
+   
+  $app->set_message("title","Sign up");
+  $app->render(LAYOUT,"signup");
+});
+
+get("/signin",function($app){
+   $app->force_to_http("/signin");
+   $app->set_message("title","Sign in");
+   require MODEL;
+   try{
+     if(is_authenticated()){
+        $app->set_message("message","Why on earth do you want to sign in again. You are already signed in. Perhaps you want to sign out first.");
+        $app->set_flash("You are already signed in");
+        $app->force_to_http("/");
+        header("location: /");
+      }   
+   }
+   catch(Exception $e){
+       $app->set_message("message",$e->getMessage($app));
+   }
+   $app->render(LAYOUT,"signin");
 });
 
 get("/myaccount/:id;[\d]+",function($app){
@@ -77,68 +112,38 @@ get("/myaccount/:id;[\d]+",function($app){
    $app->render(LAYOUT,"signin");
 });
 
+get("/art/:id;[\d]+",function($app){
+   //$app->force_to_http("/art/1");
+   $app->set_message("title","Darwin Art Company");
+   $app->set_message("message","Welcome");
+   require MODEL;
+   $id = $app->route_var("id");
+   $app->set_message("arts", get_products());
+   $app->set_message("id", $id);
+   $app->set_message("testimonials", get_testimonials($id));
+   $app->render(LAYOUT,"art");
+});
+
+
 get("/cart",function($app){
    $app->set_message("title","Shopping Cart");
    require MODEL;
    try{
      if(is_authenticated()){
          $app->set_message("arts", get_products());
+         $date = "";
+         date_default_timezone_set("Australia/Darwin");
+         $datetime = date('Y/m/d H:i:s');
+         $app->set_message("datetime", $datetime);
          $app->render(LAYOUT,"cart");
       }   
    }
    catch(Exception $e){
-       $app->set_message("message",$e->getMessage($app));
+      $app->set_flash("You must be signed in to see your cart.");
+      $app->redirect_to("/"); 
    }
-   $app->render(LAYOUT,"/");
-});
-
-get("/signin",function($app){
-   $app->force_to_http("/signin");
-   $app->set_message("title","Sign in");
-   require MODEL;
-   try{
-     if(is_authenticated()){
-        $app->set_message("message","Why on earth do you want to sign in again. You are already signed in. Perhaps you want to sign out first.");
-        $app->set_flash("You are already signed in");
-        $app->force_to_http("/");
-        header("location: /");
-      }   
-   }
-   catch(Exception $e){
-       $app->set_message("message",$e->getMessage($app));
-   }
-   $app->render(LAYOUT,"signin");
-});
-
-get("/signup",function($app){
-    $app->force_to_http("/signup");  
-    require MODEL;
-    $is_authenticated=false;
-    
-    try{
-       $is_authenticated = is_authenticated();
-    }
-    catch(Exception $e){
-       $app->set_flash("We have a problem with DB. The gerbils are working on it."); 
-       $app->redirect_to("/"); 
-    }   
-    
-    if($is_authenticated){
-        $app->set_message("message","You are already signed in.");
-        $app->set_flash("message","You are already signed in."); 
-        $app->force_to_http("/");
-        header("location: /");
-    }
-    else if(!$is_authenticated ){
-       //$app->set_message("error","You are the SUPER USER. This account cannot be deleted. You are the boss. The only way to clear the SUPER USER from the database is to DROP the entire table. Please sign in after you have finished signing up.");  
-    }
-    else{
-       $app->set_flash("You are not authorised to access this resource yet. I'm gonna tell your mum if you don't sign in."); 
-       $app->redirect_to("/signin");        
-    }
-    
-   $app->set_message("title","Sign up");
-   $app->render(LAYOUT,"signup");
+   $app->set_flash("You must be signed in to see your cart.");
+   $app->redirect_to("/"); 
 });
 
 get("/change/:id;[\d]+",function($app){
@@ -246,7 +251,6 @@ post("/signin",function($app){
   $app->redirect_to("/");
 });
 
-
 post("/art/:id[\d]+",function($app){
    require MODEL;
    $artno = $app->route_var("id");
@@ -272,7 +276,34 @@ post("/art/:id[\d]+",function($app){
    $app->redirect_to("/art/".$artno);        
  });
 
-post("/myaccount/:id[\d]+",function($app){
+ 
+post("/cart", function($app){
+   require MODEL;
+   session_start();
+   $id = $_SESSION['userno'];
+   session_write_close();
+   $artno = $app->form('artno');
+   $quantity = $app->form('quantity');
+   $pdate = $app->form('date');
+   $total = $app->form('total');
+   $purchaseno = "";
+   try{
+      $purchaseno = purchase($id, $pdate);
+   }catch(Exception $e){
+      $app->set_flash("Purchase Failed. ".$e->getMessage());  
+      $app->redirect_to("/cart".$id);        
+   }
+   try{
+      purchaseitem($id, $purchaseno, $artno, $quantity, $pdate, $total);
+      $app->set_flash("Purchase Successful!");
+   }catch(Exception $e){
+      $app->set_flash("Purchase Failed. ".$e->getMessage());  
+      $app->redirect_to("/cart".$id);        
+   }
+   
+});
+
+put("/myaccount/:id[\d]+",function($app){
    $app->set_message("title","Darwin Art Company Account");
    require MODEL;
    try{
@@ -345,27 +376,6 @@ put("/change/:id[\d]+",function($app){
       $app->set_flash("{$e->getMessage()}");  
       $app->redirect_to("/");
    }
-});
-
-post("/cart", function($app){
-   session_start();
-   $id = $_SESSION['userno'];
-   session_write_close();
-   $artno = $app->form('artno');
-   $quantity = $app->form('quantity');
-   require MODEL;
-   $purchaseno = "";
-   try{
-      $purchaseno = purchase($id);
-      purchaseitem($purchaseno, $artno, $quantity);
-      $app->set_flash("Purchase Successful!");
-      $app->redirect_to("/".$id);
-   }
-   catch(Exception $e){
-      $app->set_flash("Purchase Failed. ".$e->getMessage());  
-      $app->redirect_to("/cart".$id);        
-   }
-   
 });
 
 # The Delete call back is left for you to work out

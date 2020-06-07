@@ -4,10 +4,10 @@
     <meta charset='utf-8' />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/lib/css/standard.css" />
-    <link rel="stylesheet" href="/lib/css/bootstrap.css">
+    <link rel="stylesheet" href="/lib/views/css/standard.css" />
+    <link rel="stylesheet" href="/lib/views/css/bootstrap.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/lib/css/stylesheet.css">
+    <link rel="stylesheet" href="/lib/views/css/stylesheet.css">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -17,9 +17,8 @@
   <body>
 
     <?php
-      require PARTIALS."/header.html.php";
+    require PARTIALS."/header.html.php";
     ?>
-
     
     <div class="bodycontent">
       <div id='content'>
@@ -37,15 +36,9 @@
         ?>
       </div> <!-- end content -->
     </div> <!-- end main -->
-    <script>
-      function openNav() {
-        document.getElementById("mySidenav").style.width = "70%";
-      }
 
-      function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
-        document.body.style.backgroundColor = "rgb(18,18,18)";
-      }
-    </script>
+    <?php
+    require PARTIALS."/navscript.html.php";
+    ?>
   </body>
 </html>
