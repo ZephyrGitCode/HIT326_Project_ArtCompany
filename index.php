@@ -79,8 +79,7 @@ get("/signin",function($app){
      if(is_authenticated()){
         $app->set_message("message","Why on earth do you want to sign in again. You are already signed in. Perhaps you want to sign out first.");
         $app->set_flash("You are already signed in");
-        $app->force_to_http("/");
-        header("location: /");
+        $app->redirect_to("/"); 
       }   
    }
    catch(Exception $e){
@@ -92,17 +91,18 @@ get("/signin",function($app){
 get("/myaccount/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Welcome".$id);
    require MODEL;
+   if ($id != get_user_id()){
+      $app->redirect_to("/myaccount/".get_user_id()."");
+   }
    try{
       if(is_authenticated()){
          try{
             $app->set_message("user", get_user($id));
             $app->render(LAYOUT,"myaccount");
          }catch(Exception $e){
-            // Failed to load DB
+            $app->set_flash("Could not access your page");
          }
-         
        }   
     }
     catch(Exception $e){
@@ -131,7 +131,6 @@ get("/cart",function($app){
    try{
      if(is_authenticated()){
          $app->set_message("arts", get_products());
-         $date = "";
          date_default_timezone_set("Australia/Darwin");
          $datetime = date('Y/m/d H:i:s');
          $app->set_message("datetime", $datetime);
@@ -254,9 +253,7 @@ post("/signin",function($app){
 post("/art/:id[\d]+",function($app){
    require MODEL;
    $artno = $app->route_var("id");
-   session_start();
-   $id = $_SESSION['userno'];
-   session_write_close();
+   $id = get_user_id();
    $test = $app->form('test');
    if($artno && $id && $test){
      try{
@@ -279,9 +276,7 @@ post("/art/:id[\d]+",function($app){
  
 post("/cart", function($app){
    require MODEL;
-   session_start();
-   $id = $_SESSION['userno'];
-   session_write_close();
+   $id = get_user_id();
    $artno = $app->form('artno');
    $quantity = $app->form('quantity');
    $pdate = $app->form('date');
@@ -377,6 +372,22 @@ put("/change/:id[\d]+",function($app){
       $app->redirect_to("/");
    }
 });
+
+put("/art/:id;[\d]+",function($app){
+   require MODEL;
+   $id = $app->route_var("id");
+   $app->set_flash("Approval attempt");
+   try{
+      approve($id);
+      $app->set_flash("Testimonial approved.");
+      $app->render(LAYOUT,"home");
+   }catch(Exception $e){
+      $app->set_flash("Failed to approve");
+      $app->redirect_to("/");
+   }
+   $app->redirect_to("/");
+});
+
 
 # The Delete call back is left for you to work out
 delete("/user",function($app){

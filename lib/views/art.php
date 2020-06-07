@@ -71,27 +71,33 @@ if(!empty($arts)){
   <div class="test-list">
     <?php
     if(!empty($testimonials)){
-      
       foreach($testimonials As $test){
-        $userno = htmlspecialchars($test['id'],ENT_QUOTES, 'UTF-8');
-        $testtext = htmlspecialchars($test['test'],ENT_QUOTES, 'UTF-8');
-        $approved = htmlspecialchars($art['approved'],ENT_QUOTES, 'UTF-8');
+        $approved = htmlspecialchars($test['approved'],ENT_QUOTES, 'UTF-8');
+        if ($approved == 'true' || $usertype == "admin"){
+          $userno = htmlspecialchars($test['id'],ENT_QUOTES, 'UTF-8');
+          $testtext = htmlspecialchars($test['test'],ENT_QUOTES, 'UTF-8');
+          $testid = htmlspecialchars($test['testNo'],ENT_QUOTES, 'UTF-8');
     ?>
     <div class="test">
       <p style="font-weight: 500; margin: .2rem 1rem;">User id: <?php echo $userno ?></p>
       <p style="margin: .2rem 1rem";><?php echo $testtext ?></p>
       <?php
-      if ($usertype == 'admin'){
-        echo "admin";
+
+      if ($usertype == 'admin' && $approved == 'false'){
+        //echo "admin";
         ?>
-        <button action="/art/<?php echo $id ?>" mehtod="put">Approve</button>
+        <form action="/art/<?php echo $testid ?>" method='POST'>
+          <input type='hidden' name='_method' value='put' />
+          <p style="display: inline;margin: .2rem 1rem;">Comment awaiting approval</p><input type="submit" name="" value="Approve" style="display:inline;">
+        </form>
         <?php
       }else{
-        echo "user";
+        //echo "user";
       }
       ?>
     </div>
     <?php
+        }
       }
     }else{
       echo "<h4>No previous testiments</h4>";

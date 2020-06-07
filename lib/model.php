@@ -157,7 +157,7 @@ function sign_in($useremail,$password){
       if($statement = $db->prepare($query)){
          $binding = array($useremail);
          if(!$statement -> execute($binding)){
-                 throw new Exception("Could not execute query.");
+            throw new Exception("Could not execute query.");
          }
          else{
             $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -181,9 +181,8 @@ function sign_in($useremail,$password){
          }
       }
       else{
-            throw new Exception("Could not prepare statement.");
+         throw new Exception("Could not prepare statement.");
       }
-
    }
    catch(Exception $e){
       throw new Exception($e->getMessage());
@@ -307,7 +306,7 @@ function purchaseitem($id, $purchaseno, $artno, $quantity, $pdate, $total){
 
                // Email purchase to customer
                $sub = "Purchase details from Darwin Art Company";
-               $msg =  "Dear $fname $lname,\n   Included are the the details of your purchase for artwork:\n   $arttitle\n  Time of purchase: $pdate\n  Total: $$total\n\nThank you for your purchase!";
+               $msg =  "Dear $fname $lname,\n   Included are the the details of your purchase for artwork:\n   $quantity x $arttitle\n  Time of purchase: $pdate\n  Total: $$total\n\nThank you for your purchase!";
                mail($email, $sub, $msg);
             }catch(Exception $e){
                throw new Exception("Could Send email.");
@@ -496,45 +495,22 @@ function change_password($id, $old_pw, $new_pw, $pw_confirm){
     }
 }
 
-
-function order($id){
+function approve($id){
    try{
       $db = get_db();
-      $query = "INSERT INTO purchase (id) VALUES (?)";
+      $query = "UPDATE testimonial SET approved=? WHERE testNo=?";
       if($statement = $db->prepare($query)){
-         $binding = array($id);
+         $binding = array('true', $id);
          if(!$statement -> execute($binding)){
             throw new Exception("Could not execute query.");
-         }else{
-            
          }
       }
       else{
-         throw new Exception("Could not prepare statement.");
+      throw new Exception("Could not prepare statement.");
       }
    }
    catch(Exception $e){
-      throw new Exception($e->getMessage());
+       throw new Exception($e->getMessage());
    }
-}
 
-function orderitems($purchaseno, $artno, $quantity){
-   try{
-      $db = get_db();
-      $query = "INSERT INTO purchaseitem (purchaseNo,artNo,quantity) VALUES (?,?,?)";
-      if($statement = $db->prepare($query)){
-         $binding = array($purchaseno, $artno, $quantity);
-         if(!$statement -> execute($binding)){
-            throw new Exception("Could not execute query.");
-         }else{
-            
-         }
-      }
-      else{
-         throw new Exception("Could not prepare statement.");
-      }
-   }
-   catch(Exception $e){
-      throw new Exception($e->getMessage());
-   }
 }

@@ -18,7 +18,7 @@
     <div class="processing" id="processing">
         <br/>
         <p>Processing Purchase</p>
-        <p>if you are not redirected in 10 seconds, press here <a href="/">HOME</a></p>
+        <p>Please be patient, You will be redirected shortly.</p>
     </div>
 </body>
 
