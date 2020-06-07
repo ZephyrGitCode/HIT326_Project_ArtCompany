@@ -92,7 +92,7 @@ get("/signin",function($app){
 get("/myaccount/:id;[\d]+",function($app){
    $id = $app->route_var("id");
    $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Welcome".$id);
+   
    require MODEL;
    try{
       if(is_authenticated()){
@@ -254,9 +254,7 @@ post("/signin",function($app){
 post("/art/:id[\d]+",function($app){
    require MODEL;
    $artno = $app->route_var("id");
-   session_start();
-   $id = $_SESSION['userno'];
-   session_write_close();
+   $id = get_user_id();
    $test = $app->form('test');
    if($artno && $id && $test){
      try{
@@ -279,9 +277,7 @@ post("/art/:id[\d]+",function($app){
  
 post("/cart", function($app){
    require MODEL;
-   session_start();
-   $id = $_SESSION['userno'];
-   session_write_close();
+   $id = get_user_id();
    $artno = $app->form('artno');
    $quantity = $app->form('quantity');
    $pdate = $app->form('date');
@@ -377,6 +373,22 @@ put("/change/:id[\d]+",function($app){
       $app->redirect_to("/");
    }
 });
+
+put("/art/:id;[\d]+",function($app){
+   require MODEL;
+   $id = $app->route_var("id");
+   $app->set_flash("Approval attempt");
+   try{
+      approve($id);
+      $app->set_flash("Testimonial approved.");
+      $app->render(LAYOUT,"home");
+   }catch(Exception $e){
+      $app->set_flash("Failed to approve");
+      $app->redirect_to("/");
+   }
+   $app->redirect_to("/");
+});
+
 
 # The Delete call back is left for you to work out
 delete("/user",function($app){

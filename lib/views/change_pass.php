@@ -8,9 +8,7 @@
         <?php
         $user = $user[0];
         if(!empty($user)){
-            //print_r($user);
         ?>
-        
         <form action='/change/<?php if(!empty($user['id']))echo $user['id']?>' method='POST'>
             <input type='hidden' name='_method' value='put' />
 
