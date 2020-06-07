@@ -34,8 +34,4 @@
     <?php
       }
     ?>
-      
-    </div>
-      <a style="padding:0px" href="#"><p><span class="material-icons" style="font-size: 1.6rem;padding: 0 8px 0 5px;">speaker_notes</span>About us</p></a>
-    </div>
 </header>

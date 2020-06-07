@@ -256,11 +256,4 @@ class Application{
 		header("location: /signin");
 	  }
     }
-
-
-
-
 }
-
-
-

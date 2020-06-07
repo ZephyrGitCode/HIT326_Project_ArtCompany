@@ -88,7 +88,7 @@ if(!empty($arts)){
         ?>
         <form action="/art/<?php echo $testid ?>" method='POST'>
           <input type='hidden' name='_method' value='put' />
-          <p style="display: inline;margin: .2rem 1rem;">Comment awaiting approval</p><input type="submit" name="" value="Approve" style="width:auto;display:inline;">
+          <p style="display: inline;margin: .2rem 1rem;">Comment awaiting approval</p><input type="submit" name="" value="Approve" style="display:inline;">
         </form>
         <?php
       }else{
