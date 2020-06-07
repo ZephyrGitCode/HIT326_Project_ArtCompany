@@ -157,7 +157,7 @@ function sign_in($useremail,$password){
       if($statement = $db->prepare($query)){
          $binding = array($useremail);
          if(!$statement -> execute($binding)){
-                 throw new Exception("Could not execute query.");
+            throw new Exception("Could not execute query.");
          }
          else{
             $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -181,9 +181,8 @@ function sign_in($useremail,$password){
          }
       }
       else{
-            throw new Exception("Could not prepare statement.");
+         throw new Exception("Could not prepare statement.");
       }
-
    }
    catch(Exception $e){
       throw new Exception($e->getMessage());
