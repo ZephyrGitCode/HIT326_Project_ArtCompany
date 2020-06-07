@@ -17,7 +17,6 @@
   <body>
 
     <?php
-    phpinfo();
     require PARTIALS."/header.html.php";
     ?>
 
